@@ -1,0 +1,32 @@
+[
+    {
+        "Name": "Notepad",
+        "program_size": {
+            "text": 19524, 
+            "data": 12352,
+            "bss": 1165,
+            "heap": 131072,
+            "stack": 65536
+        }
+    },
+    {
+        "Name": "Word",
+        "program_size": {
+            "text": 77539, 
+            "data": 32680,
+            "bss": 4100,
+            "heap": 131072,
+            "stack": 65536
+        }
+    },
+    {
+        "Name": "League of Legends",
+        "program_size": {
+            "text": 349000, 
+            "data": 2150000,
+            "bss": 1000,
+            "heap": 131072,
+            "stack": 65536
+        }
+    }
+]

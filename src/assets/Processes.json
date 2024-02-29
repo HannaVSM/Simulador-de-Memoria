@@ -1,0 +1,10 @@
+[
+    {
+       "name":"SO",
+        "pid": 0,
+        "lo": false,
+        "initial_position": 0,
+        "final_position": 1048576,
+        "size": 1048576
+    }
+]
