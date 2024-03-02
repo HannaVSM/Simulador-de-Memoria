@@ -27,8 +27,9 @@ function Management(){
                 <div className="w-full h-60 p-2 border-y-4 border-white text-white flex flex-col gap-4 items-center justify-between overflow-x-hidden overflow-y-auto scroll">
                     <PartitionConfig memType = {memTypeSelected}/>
                 </div>
-
-
+            </div>
+            <div id="executed-processes" className="w-full h-auto flex flex-col items-center justify-around p-2">
+                <h2 className="max-w-full w-[90%] text-white text-xl mb-2">Processes In Execution</h2>
             </div>
                 
 
