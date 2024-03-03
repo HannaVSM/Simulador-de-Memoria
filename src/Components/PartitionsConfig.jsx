@@ -41,14 +41,14 @@ function PartitionConfig({memType}){
                       </tr>
                     </thead>
                     <tbody>
-                      <TablePartition number="1" size="2097152"/>
+                      <TablePartition number="2" size="500"/>
                     </tbody>
                   </table>
                 </div>
 
+                <h2 className="pt-2 max-w-full w-[90%] font-normal text-white text-lg mb-2 text-center">Select an adjustment algorithm</h2>
                 <div className="py-2 flex flex-row justify-center items-center w-full">
                   <select name="tipo-mem" className='max-w-72 w-full rounded text-emerald-950 text-center h-8'  id="select-tipo-mem">
-                    <option value="" disabled selected hidden>Select the allocation algorithm</option>
                     <option value="first">First Fit</option>
                     <option value="best">Best Fit</option>
                     <option value="worst">Worst Fit</option>
@@ -63,9 +63,9 @@ function PartitionConfig({memType}){
           case 'Dinamic_Memory_without_Compaction':
             return(
               <div className="flex flex-col justify-between items-center overflow-x-hidden overflow-y-auto max-h-full h-auto">
+                <h2 className="pt-2 max-w-full w-[90%] font-normal text-white text-lg mb-2 text-center">Select an adjustment algorithm</h2>
                 <div className="py-2 flex flex-row gap-2 justify-center items-center w-full">
                   <select name="tipo-mem" className='max-w-72 w-full rounded text-emerald-950 text-center h-8'  id="select-tipo-mem">
-                    <option value="" disabled selected hidden>Select the allocation algorithm</option>
                     <option value="first">First Fit</option>
                     <option value="best">Best Fit</option>
                     <option value="worst">Worst Fit</option>
