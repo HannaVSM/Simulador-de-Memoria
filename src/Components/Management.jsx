@@ -18,7 +18,7 @@ function Management(){
                     <select name="tipo-mem" value={memTypeSelected} onChange={handleSelectChange} 
                         className='max-w-full w-[90%] rounded text-emerald-950 text-center h-8'  
                         id="select-mem-type">
-                        <option value="" disabled selected hidden>Select the memory type</option>
+                        <option value="" disabled defaultValue hidden>Select the memory type</option>
                         <option value="Fixed_Memory">Fixed Memory</option>
                         <option value="Variable_Memory">Variable Memory</option>
                         <option value="Dinamic_Memory_without_Compaction">Dinamic Memory without Compaction</option>

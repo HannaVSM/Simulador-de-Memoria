@@ -1,14 +1,118 @@
-import TablePartition from "./TablePartition";
+import { useState, useEffect, useRef} from "react";
+import Trash from "../IconComponents/Trash";
 
 function PartitionConfig({memType}){
-    
+
+  const MAX_PARTITIONS_ROWS = 45;
+  const MAX_PARTITIONS_SIZE = 15360;
+
+  const [wiggle, setWiggle] = useState(false); //wiggle animation for the buttons
+
+  const [sizeValueFixed, setSizeValueFixed] = useState('');
+  const [sizeValueVariable, setSizeValueVariable] = useState('');
+  const [numberPartitionsValue, setNumberPartitionsValue] = useState('');
+  const [partitions_rows, setPartitions_rows] = useState([]);
+  const [partitions_rows_size_sum, setPartitions_rows_size_sum] = useState(0);
+  const [partitions_rows_number_sum, setPartitions_rows_number_sum] = useState(0);
+  const [partitions_rows_sum_ids, setPartitions_rows_sum_ids] = useState(0);
+
+  const sizeInputFixed = useRef(null);
+  const sizeInputVariable = useRef(null);
+  const numberPartitionsInput = useRef(null);
+  const addBtn = useRef(null);
+  
+  //elementos de la lista
+  const listPartitionRows = partitions_rows.map((partition) => (
+    <tr className="snap-end">
+      <td className="max-w-[15%] w-[15%] border border-white text-center font-normal text-white">{partition.number}</td>
+      <td className="max-w-[60%] w-[60%] border border-white text-center font-normal text-white">{partition.size}</td>
+      <td className="max-w-[25%] w-[25%] border border-white text-center font-normal text-white">
+          <button className="p-1" onClick={()=> DeletePartitionRow(partition.id)}>
+              <Trash className="hover:text-teal-600"/>
+          </button>
+      </td>
+    </tr>
+  ));
+
+  //update size and partitions summatory config
+  useEffect(() => {
+    setPartitions_rows_size_sum(partitions_rows.reduce((partition,next_partition)=> partition+(parseInt(next_partition.size)*parseInt(next_partition.number)),0))
+    setPartitions_rows_number_sum(partitions_rows.reduce((partition,next_partition)=> partition+parseInt(next_partition.number),0))
+  } ,[partitions_rows])
+
+  //fixed size validation
+  useEffect(() => {
+    if(sizeValueFixed && validateInputSize(sizeValueFixed)){
+      sizeInputFixed.current.className = "max-w-full rounded text-black text-center";
+      
+    }
+    if(sizeValueFixed && !validateInputSize(sizeValueFixed)){
+      sizeInputFixed.current.className = "max-w-full rounded text-red-600 text-center";
+    }
+
+  }, [sizeValueFixed])
+
+  //variable size validation
+  useEffect(() => {
+    if(sizeValueVariable && validateInputSize(sizeValueVariable)){
+      sizeInputVariable.current.className = "max-w-20 rounded text-black text-center";
+    }
+    if(sizeValueVariable && !validateInputSize(sizeValueVariable)){
+      sizeInputVariable.current.className = "max-w-20 rounded text-red-600 text-center";
+    }
+  },[sizeValueVariable])
+
+  //variable num partitions validation
+  useEffect(() => {
+    if(numberPartitionsValue && validateNumberPartitions(numberPartitionsValue)){
+      numberPartitionsInput.current.className = "max-w-16 rounded text-black text-center";
+    }
+    if(numberPartitionsValue && !validateNumberPartitions(numberPartitionsValue)){
+      numberPartitionsInput.current.className = "max-w-16 rounded text-red-600 text-center";
+    }
+  },[numberPartitionsValue])
+
+  const validateInputSize = (value) => {
+    return (parseInt(value)>0 && parseInt(value)<=MAX_PARTITIONS_SIZE);
+  }
+  const validateNumberPartitions = (value) => {
+    return (parseInt(value)>0 && parseInt(value)<=MAX_PARTITIONS_ROWS);
+  }
+
+  const handleChangeInputSizeFixed = event => {
+    setSizeValueFixed(event.target.value);
+  }
+  const handleChangeInputSizeVariable = event => {
+    setSizeValueVariable(event.target.value);
+  }
+  const handleChangeNumberPartitions = event => {
+    setNumberPartitionsValue(event.target.value);
+  }
+
+  const handleClickAddBtn = event => {
+    if(numberPartitionsValue && validateNumberPartitions(numberPartitionsValue) && sizeValueVariable && validateInputSize(sizeValueVariable) && (partitions_rows_size_sum+(parseInt(numberPartitionsValue)*parseInt(sizeValueVariable))<=MAX_PARTITIONS_SIZE && (partitions_rows_number_sum+parseInt(numberPartitionsValue))<=MAX_PARTITIONS_ROWS)){
+      
+      setPartitions_rows([...partitions_rows, {"number": numberPartitionsValue, "size": sizeValueVariable, "id": partitions_rows_sum_ids}]);
+      setPartitions_rows_sum_ids(partitions_rows_sum_ids+1)
+      setNumberPartitionsValue('');
+      setSizeValueVariable('');
+    }else{
+      setWiggle(true);
+    }
+  }
+
+  const DeletePartitionRow = (id) => {
+    let filteredArr = partitions_rows.filter((el) => el.id !== id);
+    setPartitions_rows(filteredArr);
+  } 
+
     const renderComponent = () => {
         switch (memType) {
           case 'Fixed_Memory':
             return(
               <div className="flex flex-col justify-between items-center overflow-x-hidden overflow-y-auto max-h-full h-auto">
                 <div className="py-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
-                    <label htmlFor="size_partitions" className="text-lg">Partitions Size (kiB)</label><input type="text" placeholder="1-15360" inputmode="numeric" pattern="[0-9]*" className="max-w-full rounded text-black text-center"/>
+                    <label htmlFor="size_partitions" className="text-lg">Partitions Size (kiB)</label><input type="text" placeholder={'1-'+MAX_PARTITIONS_SIZE} inputMode="numeric" onChange={handleChangeInputSizeFixed} value={sizeValueFixed}  pattern="[0-9]*" className="max-w-full rounded text-black text-center" ref={sizeInputFixed}/>
                 </div>
                 <div className="py-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
                   <input type="button" value="Save" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/>
@@ -21,13 +125,15 @@ function PartitionConfig({memType}){
               <div className="flex flex-col justify-between items-center overflow-x-hidden overflow-y-auto h-auto">
                 <div className="py-2 h-5/6 flex flex-row gap-2 justify-around max-w-[90%] w-full overflow-auto">
                   <div className="py-2 flex flex-col items-center justify-center">
-                    <label htmlFor="number_partitions" className="text-lg text-center">Number<br/>Partitions</label><input type="text" placeholder="1-45" inputmode="numeric" pattern="[0-9]*" className="max-w-16 rounded text-black text-center"/>
+                    <label htmlFor="number_partitions" className="text-lg text-center">Number<br/>Partitions</label><input type="text" placeholder={'1-'+MAX_PARTITIONS_ROWS} inputMode="numeric" pattern="[0-9]*" className="max-w-16 rounded text-black text-center" onChange={handleChangeNumberPartitions} value={numberPartitionsValue} ref={numberPartitionsInput}/>
                   </div>
                   <div className="py-2 flex flex-col items-center justify-center">
-                    <label htmlFor="size_partitions" className="text-lg text-center">Partitions<br/>Size (kiB)</label><input type="text" placeholder="1-15360" inputmode="numeric" pattern="[0-9]*" className="max-w-20 rounded text-black text-center"/>
+                    <label htmlFor="size_partitions" className="text-lg text-center">Partitions<br/>Size (kiB)</label><input type="text" placeholder={'1-'+MAX_PARTITIONS_SIZE} inputMode="numeric" pattern="[0-9]*" className="max-w-20 rounded text-black text-center" onChange={handleChangeInputSizeVariable} value={sizeValueVariable} ref={sizeInputVariable}/>
                   </div>
                   <div className="py-2 flex flex-col items-center justify-center">
-                    <input type="button" value="Add" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/>
+                    <input type="button" value="Add" onClick={handleClickAddBtn} onAnimationEnd={() => setWiggle(false)} ref={addBtn} className={`${
+                      wiggle && "animate-wiggle"
+                      } max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105`}/>
                   </div>
                 </div>
 
@@ -41,7 +147,7 @@ function PartitionConfig({memType}){
                       </tr>
                     </thead>
                     <tbody>
-                      <TablePartition number="2" size="500"/>
+                      {listPartitionRows}
                     </tbody>
                   </table>
                 </div>
