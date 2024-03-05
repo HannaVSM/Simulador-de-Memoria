@@ -1,26 +1,43 @@
+import { useState } from "react";
+import { useGlobalState } from "../context/GlobalState";
+
 function JSONForm() {
+    const { addTask } = useGlobalState();
+    
+    const initialJSON = 
+    `{\n  "PID": "",\n  "task": "",\n  "bytes": "",\n  "text":"",\n  "data": "",\n  "bss": "",\n  "heap": "",\n  "stack": ""\n}`;          
+    
+    const [textArea, setTextArea] = useState(initialJSON);
+
+    const onSubmit = () => {
+        const formJSON = JSON.parse(textArea);
+
+        addTask({
+            PID: formJSON.PID,
+            task: formJSON.task,
+            bytes: formJSON.bytes
+        });
+
+        setTextArea(initialJSON);
+    };
+
     return (
         <div>
             <h1>Asignación por JSON</h1>
 
             <div>
                 <textarea
-                    placeholder={
-                        `{
-                            "clave": "valor",
-                            "array": [1, 2, 3],
-                            "objeto": 9873,
-                        }`
-                    }
-                    rows={10} // Puedes ajustar la cantidad de filas según tus necesidades
+                    value={textArea}
+                    onChange={(e) => setTextArea(e.target.value)}
+                    rows={10}
                 />
             </div>
 
-            <button>
+            <button onClick={onSubmit}>
                 Asignar
             </button>
         </div>
     )
 }
 
-export default JSONForm
+export default JSONForm;

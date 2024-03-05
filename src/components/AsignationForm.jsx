@@ -5,16 +5,22 @@ function AsignationForm() {
     const { addTask } = useGlobalState();
     
     const [task, setTask] = useState();
-    const [bytes, setBytes] = useState(0);
+    const [bytes, setBytes] = useState();
+    const [counter, setCounter] = useState(1);
     
     const onSubmit = (e) => {
         e.preventDefault();
+        
         addTask({
-            id: 1,
+            PID: "P" + counter,
             task,
             bytes
         });
-        console.log(task, bytes);
+
+        setCounter(counter + 1);
+
+        setTask("");
+        setBytes("");
     }
 
     return (
@@ -24,12 +30,12 @@ function AsignationForm() {
             <form onSubmit={onSubmit}>
                 <div>
                     <label>Tarea: </label>
-                    <input type="text" onChange={(e) => setTask(e.target.value)}/>
+                    <input type="text" onChange={(e) => setTask(e.target.value)} value={task}/>
                 </div>
                 
                 <div>
                     <label>Tamaño: </label>
-                    <input type="number" onChange={(e) => setBytes(e.target.value)} />
+                    <input type="number" onChange={(e) => setBytes(e.target.value)} value={bytes}/>
                     <span> bytes</span>
                 </div>
                 
@@ -41,4 +47,4 @@ function AsignationForm() {
     )
 }
 
-export default AsignationForm
+export default AsignationForm;
