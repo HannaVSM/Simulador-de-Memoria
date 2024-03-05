@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef} from "react";
 import Trash from "../IconComponents/Trash";
+import PartitionRowsList from "./PartitionRowsList"
 
 function PartitionConfig({memType}){
 
@@ -16,23 +17,12 @@ function PartitionConfig({memType}){
   const [partitions_rows_number_sum, setPartitions_rows_number_sum] = useState(0);
   const [partitions_rows_sum_ids, setPartitions_rows_sum_ids] = useState(0);
 
+  const [compactionBoolean,setCompactionBoolean] = useState(false);
+
   const sizeInputFixed = useRef(null);
   const sizeInputVariable = useRef(null);
   const numberPartitionsInput = useRef(null);
-  const addBtn = useRef(null);
   
-  //elementos de la lista
-  const listPartitionRows = partitions_rows.map((partition) => (
-    <tr className="snap-end">
-      <td className="max-w-[15%] w-[15%] border border-white text-center font-normal text-white">{partition.number}</td>
-      <td className="max-w-[60%] w-[60%] border border-white text-center font-normal text-white">{partition.size}</td>
-      <td className="max-w-[25%] w-[25%] border border-white text-center font-normal text-white">
-          <button className="p-1" onClick={()=> DeletePartitionRow(partition.id)}>
-              <Trash className="hover:text-teal-600"/>
-          </button>
-      </td>
-    </tr>
-  ));
 
   //update size and partitions summatory config
   useEffect(() => {
@@ -101,10 +91,30 @@ function PartitionConfig({memType}){
     }
   }
 
-  const DeletePartitionRow = (id) => {
-    let filteredArr = partitions_rows.filter((el) => el.id !== id);
-    setPartitions_rows(filteredArr);
-  } 
+  function saveBtn(origin){
+    switch(origin){
+      case "Fixed":
+        if(!validateInputSize(sizeValueFixed)){
+          setWiggle(true);
+          return
+        }
+        return
+        case "Variable":
+          if(!partitions_rows.length){
+            setWiggle(true);
+            return
+          }
+          localStorage.setItem("partitions_parameters", JSON.stringify(partitions_rows))
+          console.log(partitions_rows)
+          const data = localStorage.getItem("partitions_parameters");
+          console.log("data: ", JSON.parse(data));
+          return
+      case "Dinamic":
+        return
+      default:
+        return;
+    }
+  }
 
     const renderComponent = () => {
         switch (memType) {
@@ -115,7 +125,9 @@ function PartitionConfig({memType}){
                     <label htmlFor="size_partitions" className="text-lg">Partitions Size (kiB)</label><input type="text" placeholder={'1-'+MAX_PARTITIONS_SIZE} inputMode="numeric" onChange={handleChangeInputSizeFixed} value={sizeValueFixed}  pattern="[0-9]*" className="max-w-full rounded text-black text-center" ref={sizeInputFixed}/>
                 </div>
                 <div className="py-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
-                  <input type="button" value="Save" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/>
+                  <input type="button" value="Save" onClick={()=> saveBtn("Fixed")} onAnimationEnd={() => setWiggle(false)} className={`${
+                      wiggle && "animate-wiggle"
+                      } max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105`}/>
                 </div>
                 
               </div>
@@ -131,26 +143,13 @@ function PartitionConfig({memType}){
                     <label htmlFor="size_partitions" className="text-lg text-center">Partitions<br/>Size (kiB)</label><input type="text" placeholder={'1-'+MAX_PARTITIONS_SIZE} inputMode="numeric" pattern="[0-9]*" className="max-w-20 rounded text-black text-center" onChange={handleChangeInputSizeVariable} value={sizeValueVariable} ref={sizeInputVariable}/>
                   </div>
                   <div className="py-2 flex flex-col items-center justify-center">
-                    <input type="button" value="Add" onClick={handleClickAddBtn} onAnimationEnd={() => setWiggle(false)} ref={addBtn} className={`${
+                    <input type="button" value="Add" onClick={handleClickAddBtn} onAnimationEnd={() => setWiggle(false)} className={`${
                       wiggle && "animate-wiggle"
                       } max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105`}/>
                   </div>
                 </div>
 
-                <div className="my-2 max-w-[90%] h-full max-h-[83.333333%] w-[90%] rounded outline outline-2 outline-white overflow-auto scroll-smooth snap-y"> {/*tabla de particiones a añadir*/}
-                  <table className="w-full max-w-full border-collapse">
-                    <thead>
-                      <tr>
-                          <th className="max-w-[15%] w-full border border-white text-center font-semibold text-white bg-teal-950 sticky top-0 z-10">#</th>
-                          <th className="max-w-[60%] w-full border border-white text-center font-semibold text-white bg-teal-950 sticky top-0 z-10">Size</th>
-                          <th className="max-w-[25%] w-full border border-white text-center font-semibold text-white bg-teal-950 sticky top-0 z-10">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {listPartitionRows}
-                    </tbody>
-                  </table>
-                </div>
+                <PartitionRowsList partitions_rows={partitions_rows} setPartitions_rows={setPartitions_rows}/>
 
                 <h2 className="pt-2 max-w-full w-[90%] font-normal text-white text-lg mb-2 text-center">Select an adjustment algorithm</h2>
                 <div className="py-2 flex flex-row justify-center items-center w-full">
@@ -162,31 +161,33 @@ function PartitionConfig({memType}){
                 </div>
 
                 <div className="py-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
-                  <input type="button" value="Save" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/>
+                  <input type="button" value="Save" onClick={()=> saveBtn("Variable")} onAnimationEnd={() => setWiggle(false)} className={`${
+                      wiggle && "animate-wiggle"
+                      } max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105`}/>
                 </div>
               </div>
             )
-          case 'Dinamic_Memory_without_Compaction':
+          case 'Dinamic_Memory':
             return(
               <div className="flex flex-col justify-between items-center overflow-x-hidden overflow-y-auto max-h-full h-auto">
-                <h2 className="pt-2 max-w-full w-[90%] font-normal text-white text-lg mb-2 text-center">Select an adjustment algorithm</h2>
-                <div className="py-2 flex flex-row gap-2 justify-center items-center w-full">
-                  <select name="tipo-mem" className='max-w-72 w-full rounded text-emerald-950 text-center h-8'  id="select-tipo-mem">
+                <div className="py-2 flex flex-col gap-2 justify-center items-center w-full">
+                  <div className="py-2 flex flex-row gap-2 justify-center items-center w-full">
+                    <label htmlFor="cbCompaction">Compaction?</label><input name="cbCompaction" type="checkbox" value="Compaction" onChange={() => setCompactionBoolean(!compactionBoolean)}/>
+                  </div>
+                  <h2 className={`${compactionBoolean && "hidden"} pt-2 max-w-full w-[90%] font-normal text-white text-lg mb-2 text-center`}>Select an adjustment algorithm</h2>
+                  <select name="tipo-mem" className={`${compactionBoolean && "hidden"} max-w-72 w-full rounded text-emerald-950 text-center h-8`}  id="select-tipo-mem">
                     <option value="first">First Fit</option>
                     <option value="best">Best Fit</option>
                     <option value="worst">Worst Fit</option>
                   </select>
                 </div>
-                <div className="py-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
-                  <input type="button" value="Save" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/>
-                </div>
-              </div>
-            )
-          case 'Dinamic_Memory_with_Compaction':
-            return(
-              <div className="flex flex-col justify-center items-center overflow-x-hidden overflow-y-auto max-h-[13.5rem] h-auto">
-                <div className="py-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
+
+                <div className={`${!compactionBoolean && "hidden"} py-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap`}>
                   <input type="button" value="Compact" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/>
+                </div>
+
+                <div className="py-2 my-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
+                  <input type="button" value="Save" onClick={()=> saveBtn("Dinamic")} className={`${compactionBoolean && "hidden"} max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105`}/>
                 </div>
               </div>
             )
