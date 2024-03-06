@@ -14,7 +14,7 @@ function AsignationForm() {
         addTask({
             PID: "P" + counter,
             task,
-            bytes
+            bytes: +bytes
         });
 
         setCounter(counter + 1);
@@ -25,22 +25,22 @@ function AsignationForm() {
 
     return (
         <div>
-            <h1>Asignación de Tareas</h1>
+            <h1>Task Asignation</h1>
 
             <form onSubmit={onSubmit}>
                 <div>
-                    <label>Tarea: </label>
+                    <label>Task: </label>
                     <input type="text" onChange={(e) => setTask(e.target.value)} value={task}/>
                 </div>
                 
                 <div>
-                    <label>Tamaño: </label>
+                    <label>Size: </label>
                     <input type="number" onChange={(e) => setBytes(e.target.value)} value={bytes}/>
                     <span> bytes</span>
                 </div>
                 
                 <button>
-                    Asignar
+                    Assign
                 </button>
             </form>
         </div>

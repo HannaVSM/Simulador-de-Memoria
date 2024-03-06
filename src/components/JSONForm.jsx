@@ -15,7 +15,7 @@ function JSONForm() {
         addTask({
             PID: formJSON.PID,
             task: formJSON.task,
-            bytes: formJSON.bytes
+            bytes: +formJSON.bytes
         });
 
         setTextArea(initialJSON);
@@ -23,7 +23,7 @@ function JSONForm() {
 
     return (
         <div>
-            <h1>Asignación por JSON</h1>
+            <h1>JSON Asignation</h1>
 
             <div>
                 <textarea
@@ -34,7 +34,7 @@ function JSONForm() {
             </div>
 
             <button onClick={onSubmit}>
-                Asignar
+                Assign
             </button>
         </div>
     )

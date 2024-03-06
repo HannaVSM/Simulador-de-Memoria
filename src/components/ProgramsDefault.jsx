@@ -10,7 +10,7 @@ function ProgramsDefault() {
                 addTask({
                     PID: "P99",
                     task: "Brave",
-                    bytes: "436201"
+                    bytes: 436201
                 });
             break;
             
@@ -18,7 +18,7 @@ function ProgramsDefault() {
                 addTask({
                     PID: "P98",
                     task: "WSL",
-                    bytes: "286708"
+                    bytes: 286708
                 });
             break;
 
@@ -26,7 +26,7 @@ function ProgramsDefault() {
                 addTask({
                     PID: "P97",
                     task: "Valorant",
-                    bytes: "2696608"
+                    bytes: 2696608
                 });
             break;
 
@@ -34,7 +34,7 @@ function ProgramsDefault() {
                 addTask({
                     PID: "P96",
                     task: "Netbeans",
-                    bytes: "3996608"
+                    bytes: 3996608
                 });
             break;
 
@@ -42,7 +42,7 @@ function ProgramsDefault() {
                 addTask({
                     PID: "P95",
                     task: "Inkscape",
-                    bytes: "1785608"
+                    bytes: 1785608
                 });
             break;
 
@@ -55,7 +55,7 @@ function ProgramsDefault() {
 
     return (
         <div>
-            <h1>ProgramsDefault</h1>
+            <h1>Default Task</h1>
 
             <ul>
                 {programsDefault.map((item, index) => (
