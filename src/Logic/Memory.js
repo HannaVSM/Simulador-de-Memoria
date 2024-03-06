@@ -20,8 +20,6 @@ export function MemoryFixed(tamPartitionsKib) {
   const userMemory = memory.size - memory.partitions.partition_so.size;
 
   const partitions = Math.floor(userMemory / tamPartitions);
-  // console.log(Math.floor(userMemory / tamPartitions));
-  var objPartitions = {};
 
   var position = 1048577;
   var positionI = position;
@@ -42,10 +40,16 @@ export function MemoryFixed(tamPartitionsKib) {
     positionI = positionF + 1;
   }
 
-  // Concatenar jsonObj2 en la propiedad "partitions" de jsonObj1
-  memory.partitions = Object.assign({}, memory.partitions, objPartitions2);
+  memory.partitions = Object.assign([], memory.partitions, objPartitions2);
 
-  // Mostrar el resultado
+
+  var arrayDeJson = Object.keys(memory.partitions).map(function(key) {
+    return memory.partitions[key];
+  });
+  
+  console.log(arrayDeJson);
+  memory.partitions = arrayDeJson;
   console.log(memory);
+
   return memory;
 }
