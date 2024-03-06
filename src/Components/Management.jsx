@@ -29,7 +29,7 @@ function Management(){
                 </section>
             </div>
             <section id="executed-processes" className="w-full h-full flex flex-col items-center justify-top px-2">
-                <h2 className="max-w-full w-[90%] font-semibold text-white text-xl mb-2">Processes In Execution</h2>
+                <h2 className="max-w-full w-[90%] font-semibold text-white text-xl mb-2">Processes List</h2>
                 <ProcessList/>
                 <div id="program-buttons" className="w-full max-w-full flex flex-row justify-center p-4 gap-2 lg:gap-16 flex-wrap text-white">
                     {/* <input type="button" value="Unassign" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/> */}

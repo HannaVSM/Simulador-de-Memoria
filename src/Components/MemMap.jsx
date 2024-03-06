@@ -1,19 +1,50 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import { useGlobalState } from "../context/GlobalState";
+
 function MemMap() {
+
+    const {memMapBuild} = useGlobalState()
     
+    // useEffect(() => {
+    //     console.log("memMapBuild value:", memMapBuild);
+    // }, [memMapBuild]);
+
     const renderComponent = () => {
 
         const [partitions, setPartitions] = useState([]);
+
         const partitionsTable = partitions?.map((partition)=>{
             return(
                 <div>
-
+                    
                 </div>
             )
         })
 
-        switch (undefined) {
-            case "Ready":
+        switch (memMapBuild) {
+            case "Fixed":
+            
+                return(
+                    <div className="">
+                        
+                        <div className="">
+                            <p>Funciona Fijo</p>
+                        </div>
+                    </div>
+
+                )
+            case "Variable":
+            
+                return(
+                    <div className="">
+                        
+                        <div className="">
+
+                        </div>
+                    </div>
+
+                )
+            case "Dinamic":
             
                 return(
                     <div className="">

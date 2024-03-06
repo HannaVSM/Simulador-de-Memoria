@@ -1,17 +1,19 @@
 import RightArrow from "../IconComponents/RightArrow";
 import Stop from "../IconComponents/Stop";
 import Trash from "../IconComponents/Trash";
+import { useGlobalState } from "../context/GlobalState";
 
 function ProcessList(){
-
-    const processesList = [{"pid":"PC1", "name":"Bloc de Notas", "size": "1.048.576"}]
+    const { tasks } = useGlobalState();
+    const { deleteTask } = useGlobalState();
     
     
-    const listProcess = processesList.map((process, i) => {//falta el origen de processesList
+    const listProcess = tasks.map((process, i) => {//falta el origen de processesList
         return(
+            
             <tr className="snap-end" key={i}>
-                <td className="max-w-[15%] w-[15%] border border-white text-center font-normal text-white">{process.pid}</td>
-                <td className="max-w-[30%] w-[30%] border border-white text-center font-normal text-white">{process.name}</td>
+                <td className="max-w-[15%] w-[15%] border border-white text-center font-normal text-white">{process.PID}</td>
+                <td className="max-w-[30%] w-[30%] border border-white text-center font-normal text-white">{process.task}</td>
                 <td className="max-w-[30%] w-[30%] border border-white text-center font-normal text-white">{process.size}</td>
                 <td className="max-w-[25%] w-[25%] border border-white text-center font-normal text-white">
                     <button className="p-1">
@@ -22,7 +24,7 @@ function ProcessList(){
                         <Stop className="hover:text-teal-600"/>
                     </button>
 
-                    <button className="p-1">
+                    <button className="p-1" onClick={() => deleteTask(process.PID)} >
                         <Trash className="hover:text-teal-600"/>
                     </button>
                 </td>
@@ -45,6 +47,7 @@ function ProcessList(){
                     {listProcess}
                 </tbody>
             </table>
+            
         </div>
     )
 }

@@ -1,8 +1,8 @@
-import { createContext , useContext, useReducer} from "react";
-import AppReducer from './AppReducer.jsx'
+import { createContext , useContext, useReducer, useState} from "react";
+import AppReducer from './AppReducer'
 
 const initialState = {
-    tasks: []
+    tasks: [{"PID":"SO","task":"Sistema Operativo","size": 1048576}]
 }
 
 export const Context = createContext();
@@ -14,6 +14,7 @@ export const useGlobalState = () => {
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
+    const [memMapBuild, setMemMapBuild] = useState("")
 
     const addTask = (task) => {
         dispatch({
@@ -22,11 +23,33 @@ export const GlobalProvider = ({children}) => {
         })
     }
 
+    const deleteTask = (PID) => {
+        dispatch(
+            {
+                type: "DELETE_PROCESS",
+                payload: PID
+            }//action
+        )
+    }
+
+
+    const changeMemMapBuild = (memType)=>{
+        if(memType === "Fixed")
+            setMemMapBuild("Fixed")
+        if(memType === "Variable")
+            setMemMapBuild("Variable")
+        if(memType === "Dinamic")
+            setMemMapBuild("Dinamic")
+    }
+
     return (
         <Context.Provider 
             value={{
                 tasks: state.tasks,
-                addTask
+                addTask,
+                deleteTask,
+                changeMemMapBuild,
+                memMapBuild
             }}
         >
             {children}

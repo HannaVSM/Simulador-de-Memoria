@@ -4,7 +4,12 @@ export default (state, action) => {
             return {
                 tasks: [...state.tasks, action.payload]
             };
-            default:
-            return state
+        case "DELETE_PROCESS":
+            return{
+                ...state,
+                tasks: state.tasks.filter((task) => task.PID !== action.payload)
+            };
+        default:
+        return state
     }
 }

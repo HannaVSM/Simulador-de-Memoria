@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef} from "react";
 import { MemoryFixed } from "../Logic/Memory";
 import PartitionRowsList from "./PartitionRowsList"
+import { useGlobalState } from "../context/GlobalState";
 
 function PartitionConfig({memType}){
 
   const MAX_PARTITIONS_ROWS = 15360;
   const MAX_PARTITIONS_SIZE = 15360;
+
+  const {changeMemMapBuild} = useGlobalState()
 
   const [wiggle, setWiggle] = useState(false); //wiggle animation for the buttons
 
@@ -96,22 +99,22 @@ function PartitionConfig({memType}){
       case "Fixed":
         if(!validateInputSize(sizeValueFixed)){
           setWiggle(true);
-          return
+          break;
         }
-        localStorage.setItem("fixed_partitions_size", sizeValueFixed)
-        MemoryFixed()
-        return 
+        // sessionStorage.setItem("fixed_partitions_size", sizeValueFixed);
+        sessionStorage.setItem("fixed_partitions", JSON.stringify(MemoryFixed(sizeValueFixed)));
+        changeMemMapBuild("Fixed")
+        break; 
 
         case "Variable":
           if(!partitions_rows.length){
             setWiggle(true);
-            return
+            break;
           }
-          localStorage.setItem("partitions_parameters", JSON.stringify(partitions_rows))
-          console.log(partitions_rows)
-          return
+            sessionStorage.setItem("partitions_parameters", JSON.stringify(partitions_rows))
+          break;
       case "Dinamic":
-        return
+        break;
       default:
         return;
     }

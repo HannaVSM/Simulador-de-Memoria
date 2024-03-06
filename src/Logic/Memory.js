@@ -12,16 +12,15 @@ const memory = {
   },
 };
 
-export function MemoryFixed() {
+export function MemoryFixed(tamPartitionsKib) {
   // ¿de qué tamaño quiere sus particiones en kib?
-  let tamPartitionsKib = localStorage.fixed_partitions_size;
+  // let tamPartitionsKib = localStorage.fixed_partitions_size;
   let tamPartitions = tamPartitionsKib * 1024;
-  console.log(tamPartitionsKib)
 
   const userMemory = memory.size - memory.partitions.partition_so.size;
 
   const partitions = Math.floor(userMemory / tamPartitions);
-  console.log(Math.floor(userMemory / tamPartitions));
+  // console.log(Math.floor(userMemory / tamPartitions));
   var objPartitions = {};
 
   var position = 1048577;
@@ -48,4 +47,5 @@ export function MemoryFixed() {
 
   // Mostrar el resultado
   console.log(memory);
+  return memory;
 }
