@@ -5,7 +5,7 @@ function ProcessExecution() {
     
     return (
         <div>
-            <h1>Process in Execution</h1>
+            <h1>PROCESS IN EXECUTION</h1>
             <div>
                 {JSON.stringify(data)}
             </div>

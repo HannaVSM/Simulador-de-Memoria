@@ -51,20 +51,29 @@ function ProgramsDefault() {
         }
     };
 
-    const programsDefault = ["Brave", "WSL", "Valorant", "Netbeans", "Inkscape"];
+    const programsDefault = ["Brave | 436201 bytes", "WSL | 286708 bytes", "Valorant | 2696608 bytes", "Netbeans | 3996608 bytes", "Inkscape | 1785608 bytes"];
 
     return (
-        <div>
-            <h1>Default Task</h1>
+        <>
+            <h1 className="mb-4 ml-2">DEFAULT TASK</h1>
 
-            <ul>
-                {programsDefault.map((item, index) => (
-                    <li key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
-                        {item}
-                    </li>
-                ))}
-            </ul>
-        </div>        
+            <div className='m-2 mr-4 border border-white'>
+                <ul>
+                    {programsDefault.map((item, index) => (
+                        <div className='bg-white m-2 flex justify-center'>
+                            <li 
+                                key={index} 
+                                onClick={() => handleClick(item)} 
+                                style={{ cursor: 'pointer' }}
+                                className='text-black'
+                            >
+                                {item}
+                            </li>
+                        </div>
+                    ))}
+                </ul>
+            </div>
+        </>        
     )
 }
 
