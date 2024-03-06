@@ -14,7 +14,7 @@ export const useGlobalState = () => {
 
 export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
-    const [memMapBuild, setMemMapBuild] = useState("")
+    const [memMapBuild, setMemMapBuild] = useState("Default")
 
     const addTask = (task) => {
         dispatch({
@@ -40,6 +40,8 @@ export const GlobalProvider = ({children}) => {
             setMemMapBuild("Variable")
         if(memType === "Dinamic")
             setMemMapBuild("Dinamic")
+        if(memType === "Default")
+            setMemMapBuild("Default")
     }
 
     return (

@@ -3,6 +3,7 @@ import { MemoryFixed } from "../Logic/Memory";
 import PartitionRowsList from "./PartitionRowsList"
 import { useGlobalState } from "../context/GlobalState";
 
+
 function PartitionConfig({memType}){
 
   const MAX_PARTITIONS_ROWS = 15360;
@@ -25,6 +26,15 @@ function PartitionConfig({memType}){
   const sizeInputFixed = useRef(null);
   const sizeInputVariable = useRef(null);
   const numberPartitionsInput = useRef(null);
+
+  //clear all every change of mem type
+  useEffect(() => {
+    setSizeValueFixed('');
+    setNumberPartitionsValue('');
+    setSizeValueVariable('');
+    setPartitions_rows([]);
+    setPartitions_rows_sum_ids(0);
+  }, [memType])
   
 
   //update size and partitions summatory config
@@ -66,10 +76,10 @@ function PartitionConfig({memType}){
   },[numberPartitionsValue])
 
   const validateInputSize = (value) => {
-    return (parseInt(value)>0 && parseInt(value)<=MAX_PARTITIONS_SIZE);
+    return (parseInt(value)>0 && parseInt(value)<=MAX_PARTITIONS_SIZE) && /^\d*$/.test(value);
   }
   const validateNumberPartitions = (value) => {
-    return (parseInt(value)>0 && parseInt(value)<=MAX_PARTITIONS_ROWS);
+    return (parseInt(value)>0 && parseInt(value)<=MAX_PARTITIONS_ROWS) && /^\d*$/.test(value);
   }
 
   const handleChangeInputSizeFixed = event => {
@@ -101,18 +111,18 @@ function PartitionConfig({memType}){
           setWiggle(true);
           break;
         }
-        // sessionStorage.setItem("fixed_partitions_size", sizeValueFixed);
-        sessionStorage.setItem("fixed_partitions", JSON.stringify(MemoryFixed(sizeValueFixed)));
+        sessionStorage.setItem("partitions", JSON.stringify(MemoryFixed(sizeValueFixed)));
         changeMemMapBuild("Fixed")
         break; 
 
-        case "Variable":
-          if(!partitions_rows.length){
-            setWiggle(true);
-            break;
-          }
-            sessionStorage.setItem("partitions_parameters", JSON.stringify(partitions_rows))
+      case "Variable":
+        if(!partitions_rows.length){
+          setWiggle(true);
           break;
+        }
+          sessionStorage.setItem("partitions_parameters", JSON.stringify(partitions_rows))
+          changeMemMapBuild("Variable")
+        break;
       case "Dinamic":
         break;
       default:
