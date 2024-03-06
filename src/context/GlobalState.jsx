@@ -2,7 +2,7 @@ import { createContext , useContext, useReducer, useState} from "react";
 import AppReducer from './AppReducer'
 
 const initialState = {
-    tasks: [{"PID":"SO","task":"Sistema Operativo","size": 1048576}]
+    tasks: []
 }
 
 export const Context = createContext();
