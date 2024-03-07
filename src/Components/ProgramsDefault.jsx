@@ -54,16 +54,19 @@ function ProgramsDefault() {
     const programsDefault = ["Brave", "WSL", "Valorant", "Netbeans", "Inkscape"];
 
     return (
-        <div>
+        <div className="mb-4 mx-2">
             <h1>Default Task</h1>
-
-            <ul>
-                {programsDefault.map((item, index) => (
-                    <li key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
-                        {item}
-                    </li>
-                ))}
-            </ul>
+            <div className='m-2 mr-4 border border-white'>
+                <ul className='w-full max-w-full'>
+                    {programsDefault.map((item, index) => (
+                        <div className='bg-white m-2 flex justify-center'>
+                            <li key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }} className='text-black w-full text-center'>
+                                {item}
+                            </li>
+                        </div>
+                    ))}
+                </ul>
+            </div>
         </div>        
     )
 }

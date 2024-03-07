@@ -23,19 +23,22 @@ function JSONForm() {
 
     return (
         <div>
-            <h1>JSON Asignation</h1>
+            <h1 className="mb-4 ml-2">JSON Asignation</h1>
 
-            <div>
+            <div className="ml-4 mr-4">
                 <textarea
                     value={textArea}
                     onChange={(e) => setTextArea(e.target.value)}
                     rows={10}
+                    className="bg-zinc-700 text-slate-200 w-full rounded-md px-4 py-3 resize-none h-60"
                 />
             </div>
 
-            <button onClick={onSubmit}>
-                Assign
-            </button>
+            <div className="flex justify-center">
+                <button onClick={onSubmit} className="mt-2 mb-4">
+                    Assign
+                </button>
+            </div>
         </div>
     )
 }

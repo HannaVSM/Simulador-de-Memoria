@@ -19,7 +19,7 @@ function Management(){
     };
 
     return(
-        <div id='parameters' className='h-full w-1/4 flex flex-col align-top gap-4 border-4 border-white overflow-auto'>
+        <div id='parameters' className='h-full w-1/4 flex flex-col align-top gap-4 border-x-2 border-white overflow-auto'>
             <div id="config" className="w-full h-auto flex flex-col items-center justify-around align-top">
                 <section id="wrapper-tipo-mem" className="w-full h-auto flex flex-col items-center justify-around align-top p-2 pb-4">
                     <h2 className="max-w-full w-[90%] font-semibold text-white text-xl mb-2">Memory Management</h2>

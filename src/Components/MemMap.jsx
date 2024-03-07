@@ -18,7 +18,8 @@ function MemMap() {
     useEffect(() => {
         let partts = JSON.parse(sessionStorage.getItem("partitions"));
         setPartitions(partts?.partitions);        
-    }, [memMapBuild]);//Aca falta escuchar otro elemento que lo actualice al cambiar los valores del size y al poner programas en el array
+        console.log("aaaaa")
+    }, [sessionStorage.getItem("partitions")]);//Aca falta escuchar otro elemento que lo actualice al cambiar los valores del size y al poner programas en el array
 
     const memoryCanvas = () =>{
         return(
@@ -44,15 +45,15 @@ function MemMap() {
         )
     }
 
-    const partitionsTable = partitions.map((partition, i)=>{
+    const partitionsTable = partitions?.map((partition, i)=>{
         return(
             <div key={i} className={`${divSize(partition.size)} flex flex-row w-full w-max-full h-full justify-center items-center text-white`}>
-                <div className="w-full max-w-[10%] h-full flex flex-col justify-between items-end text-center">
+                <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
                     {
                         (parseInt(partition.initial_position) == 0) &&<div className='text-xs pr-1'> {partition.initial_position} </div>
                     }
                     
-                    <div className="text-xs pr-1 text-end">{partition.final_position} </div>
+                    <div className="text-xs pr-1 ">{partition.final_position} </div>
                 </div>
                 <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center">{partition.pid || "    "} </div>
             </div>
@@ -111,7 +112,7 @@ function MemMap() {
     }
 
     return(
-        <div className='h-full w-2/4 flex flex-col items-center justify-center outline outline-2 outline-white overflow-auto' id='mem-map'>
+        <div className='h-full w-2/4 flex flex-col items-center justify-center outline outline-2 outline-white border-l-2 border-white overflow-auto' id='mem-map'>
               {renderComponent()}
         </div>
     )
