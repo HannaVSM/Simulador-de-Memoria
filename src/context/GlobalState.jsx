@@ -75,6 +75,12 @@ export const GlobalProvider = ({ children }) => {
     );
   };
 
+  const clearTask = () => {
+    dispatch({
+      type: "CLEAR",
+    });
+  };
+
   const changeMemMapBuild = (memType) => {
     if (memType === "Fixed") setMemMapBuild("Fixed");
     if (memType === "Variable") setMemMapBuild("Variable");
@@ -120,6 +126,7 @@ export const GlobalProvider = ({ children }) => {
         greensPIDs,
         addedPIDs,
         resetProcessListColor,
+        clearTask,
       }}
     >
       {children}

@@ -36,6 +36,14 @@ function MemMap() {
     GIANT: "max-h-56",
   };
 
+  function numHex(s) {
+    let a = s.toString(16);
+    if (a.length % 2 > 0) {
+      a = "0" + a;
+    }
+    return a;
+  }
+
   const memoryCanvas = () => {
     return (
       <>
@@ -93,10 +101,24 @@ function MemMap() {
       >
         <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
           {parseInt(partition.initial_position) == 0 && (
-            <div className="text-xs pr-1"> {partition.initial_position} </div>
+            <div className="text-xs pr-1">
+              {" "}
+              {Math.floor(parseInt(partition.initial_position) / 1024)}
+              {" KiB "}
+            </div>
           )}
 
-          <div className="text-xs pr-1 ">{partition.final_position} </div>
+          <div className="text-xs pr-1 ">
+            {Math.floor(parseInt(partition.final_position) / 1024)}
+            {" KiB "}
+          </div>
+        </div>
+        <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
+          {parseInt(partition.initial_position) == 0 && (
+            <div className="text-xs pr-1"> {partition.initial_position} B </div>
+          )}
+
+          <div className="text-xs pr-1 ">{partition.final_position} B </div>
         </div>
         <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center">
           {partition.pid || ""}{" "}

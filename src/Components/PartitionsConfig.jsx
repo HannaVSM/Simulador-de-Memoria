@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { MemoryFixed, MemoryVariable, MemoryDinamic } from "../Logic/Memory";
 import PartitionRowsList from "./PartitionRowsList";
 import { useGlobalState } from "../context/GlobalState";
+import { DinamicCompaction } from "../Logic/Adjustment";
 
 function PartitionConfig({ memType }) {
   const MAX_PARTITIONS_ROWS = 15360;
@@ -11,6 +12,7 @@ function PartitionConfig({ memType }) {
     changeMemMapBuild,
     setPartitionsArray,
     setFitAlgorithm,
+    partitionsArray,
     resetProcessListColor,
   } = useGlobalState();
 
@@ -333,13 +335,6 @@ function PartitionConfig({ memType }) {
                   onChange={() => setCompactionBoolean(!compactionBoolean)}
                 />
               </div>
-              <h2
-                className={`${
-                  compactionBoolean && "hidden"
-                } pt-2 max-w-full w-[90%] font-normal text-white text-lg mb-2 text-center`}
-              >
-                Select an adjustment algorithm
-              </h2>
             </div>
 
             <div
@@ -350,6 +345,9 @@ function PartitionConfig({ memType }) {
               <input
                 type="button"
                 value="Compact"
+                onClick={() => {
+                  DinamicCompaction(partitionsArray);
+                }}
                 className="max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-teal-600 hover:scale-105"
               />
             </div>

@@ -5,8 +5,12 @@ import { useGlobalState } from "../context/GlobalState";
 
 function Management() {
   const [memTypeSelected, setMemTypeSelected] = useState("");
-  const { changeMemMapBuild, resetProcessListColor, setPartitionsArray } =
-    useGlobalState();
+  const {
+    changeMemMapBuild,
+    resetProcessListColor,
+    setPartitionsArray,
+    clearTask,
+  } = useGlobalState();
 
   const handleSelectChange = (event) => {
     resetProcessListColor();
@@ -69,6 +73,7 @@ function Management() {
           <input
             type="button"
             value="Clear"
+            onClick={clearTask}
             className="max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-teal-600 hover:scale-105"
           />
         </div>

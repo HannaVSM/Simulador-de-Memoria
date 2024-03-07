@@ -9,6 +9,10 @@ export default (state, action) => {
         ...state,
         tasks: state.tasks.filter((task) => task.PID !== action.payload),
       };
+    case "CLEAR":
+      return {
+        tasks: [],
+      };
     default:
       return state;
   }

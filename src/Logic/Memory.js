@@ -73,7 +73,7 @@ export function MemoryVariable(partitionsRows) {
   let objTempPartitions = [];
 
   partitionsRows.sort(function (a, b) {
-    return b.size - a.size;
+    return a.size - b.size;
   });
 
   for (var i = 0; i < partitionsRows?.length; i++) {
@@ -101,7 +101,17 @@ export function MemoryVariable(partitionsRows) {
     return memory.partitions[key];
   });
 
-  memory.partitions = arrayDeJson.reverse();
+  memory.partitions = arrayDeJson;
+
+  var indSO = memory.partitions.findIndex(function (obj) {
+    return obj.pid === "SO";
+  });
+
+  // Mueve el objeto encontrado al principio del array
+  if (indSO !== -1) {
+    var objSO = memory.partitions.splice(indSO, 1)[0];
+    memory.partitions.unshift(objSO);
+  }
 
   // console.log(memory.partitions);
   return memory;
@@ -134,7 +144,7 @@ export function MemoryDinamic() {
     return memory.partitions[key];
   });
 
-  memory.partitions = arrayDeJson.reverse();
-  // console.log(memory);
+  memory.partitions = arrayDeJson;
+  console.log(memory);
   return memory;
 }
