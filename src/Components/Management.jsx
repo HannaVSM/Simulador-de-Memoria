@@ -24,7 +24,7 @@ function Management(){
                 <section id="wrapper-tipo-mem" className="w-full h-auto flex flex-col items-center justify-around align-top p-2 pb-4">
                     <h2 className="max-w-full w-[90%] font-semibold text-white text-xl mb-2">Memory Management</h2>
                     <select name="tipo-mem" value={memTypeSelected} onChange={handleSelectChange} 
-                        className='max-w-full w-[90%] rounded text-emerald-950 text-center h-8'  
+                        className='max-w-full w-[90%] rounded text-teal-600 text-center h-8'  
                         id="select-mem-type">
                         <option value="" disabled defaultValue hidden>Select the memory type</option>
                         <option value="Fixed_Memory">Fixed Memory</option>
@@ -40,8 +40,7 @@ function Management(){
                 <h2 className="max-w-full w-[90%] font-semibold text-white text-xl mb-2">Processes List</h2>
                     <ProcessList/>
                 <div id="program-buttons" className="w-full max-w-full flex flex-row justify-center p-4 gap-2 lg:gap-16 flex-wrap text-white">
-                    {/* <input type="button" value="Unassign" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/> */}
-                    <input type="button" value="Clear" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-emerald-800 hover:scale-105'/>
+                    <input type="button" value="Clear" className='max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-teal-600 hover:scale-105'/>
                 </div>
             </section>
         </div>

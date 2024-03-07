@@ -16,6 +16,7 @@ export const GlobalProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
     const [memMapBuild, setMemMapBuild] = useState("Default")
     const [partitionsArray, setPartitionsArray] = useState([])
+    const [fitAlgorithm, setFitAlgorithm] = useState("first")
 
     const addTask = (task) => {
         dispatch({
@@ -54,7 +55,9 @@ export const GlobalProvider = ({children}) => {
                 changeMemMapBuild,
                 memMapBuild,
                 partitionsArray,
-                setPartitionsArray
+                setPartitionsArray,
+                fitAlgorithm,
+                setFitAlgorithm
             }}
         >
             {children}

@@ -4,19 +4,55 @@ import { useGlobalState } from "../context/GlobalState";
 function MemMap() {
 
     const {memMapBuild, partitionsArray} = useGlobalState()
+
+    const [sizeOcuppied, setSizeOcuppied] = useState(0)
+    const [sizeFree, setSizeFree] = useState(0)
+    const [totalMemMapSize, setTotalMemMapSize] = useState(0)
+    
+
+    useEffect(() => {
+        if(partitionsArray){
+
+            const occupied = partitionsArray.reduce((acc, obj) => {
+                return acc + (obj.lo ? obj.size : 0);
+            }, 0);
+            
+            const free = partitionsArray.reduce((acc, obj) => {
+                return acc + (obj.lo ? 0 : obj.size);
+            }, 0);
+
+            const totalSize = partitionsArray.reduce((acc, obj) => {
+                return acc + obj.size;
+            }, 0);
+
+            setSizeOcuppied(occupied)
+            setSizeFree(free)
+            setTotalMemMapSize(totalSize)
+        }
+    } ,[partitionsArray])
     
     const DIVSIZE = {
+        "SUPERSMALL":"max-h-8",
         "SMALL":"max-h-20",
-        "NORMAL":"max-h-24",
-        "BIG":"max-h-28",
-        "GIANT":"max-h-32",
+        "NORMAL":"max-h-32",
+        "BIG":"max-h-44",
+        "GIANT":"max-h-56",
     }
 
     const memoryCanvas = () =>{
         return(
             <>
-            <div id="Memory" className="mt-4 w-full max-w-[90%] h-[40rem] max-h-[40rem] flex flex-col outline outline-white py-4 overflow-auto">
+            <div id="Memory" className="mt-4 w-full max-w-[90%] h-[40rem] max-h-[40rem] max-h- flex flex-col items-center justify-center outline outline-white py-4 overflow-auto">
                 {partitionsTable}
+                {
+                    (totalMemMapSize != 16777216) && (totalMemMapSize != 0) && 
+                    <div className={`max-h-8 flex flex-row w-full w-max-full h-full justify-center items-center text-white`}>
+                        <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">                        
+                            <div className="text-xs pr-1 ">16777216</div>
+                        </div>
+                        <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center bg-black">None</div>
+                    </div>
+                }
             </div>
             <div id="MemoryState" className="mb-4 flex flex-row w-full max-w-[90%] justify-start items-center outline outline-white text-white">
                 <div className="flex flex-row h-full justify-center items-center border-r border-white">
@@ -24,20 +60,10 @@ function MemMap() {
                 </div>
                 <div className="flex flex-col h-full justify-start items-start grow">
                     <div className="flex flex-row border-b border-white w-full">
-                        <span className="p-2 w-24">Ocuppied:</span><p className="p-2">{
-                        // partitionsArray.partitions?.reduce((partition,next_partition)=> {
-                        //     if(partition.lo)
-                        //         return partition.size+next_partition.size
-                        // }, 0)
-                        }</p>
+                        <span className="p-2 w-24">Ocuppied:</span><p className="p-2">{sizeOcuppied || ""} Bytes || {sizeOcuppied/1024} kiB</p>
                     </div>
                     <div className="flex flex-row ">
-                        <span className="p-2 w-24">Free:</span><p className="p-2">{//console.log(partitionsArray.partitions[0].lo)
-                        // partitionsArray?.partitions?.reduce((partition,next_partition)=> {
-                        //     if(!partition.lo)
-                        //         return partition.size+next_partition.size
-                        // }, 0)
-                        }</p>
+                        <span className="p-2 w-24">Free:</span><p className="p-2">{sizeFree || ""} Bytes || {sizeFree/1024} kiB</p>
                     </div>
                 </div>
             </div>
@@ -45,7 +71,7 @@ function MemMap() {
         )
     }
 
-    const partitionsTable = partitionsArray.partitions?.map((partition, i)=>{
+    const partitionsTable = partitionsArray?.map((partition, i)=>{
         return(
             <div key={i} className={`${divSize(partition.size)} flex flex-row w-full w-max-full h-full justify-center items-center text-white`}>
                 <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
@@ -55,20 +81,22 @@ function MemMap() {
                     
                     <div className="text-xs pr-1 ">{partition.final_position} </div>
                 </div>
-                <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center">{partition.pid || "    "} </div>
+                <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center">{partition.pid || ""} </div>
             </div>
         )
     })
 
 
     function divSize(size){
-        if(size<=3932160)
+        if(size<=3145728)
+            return DIVSIZE.SUPERSMALL
+        if(size>3145728 && size<=(3145728*2))
             return DIVSIZE.SMALL
-        if(size>3932160 && size<=(3932160*2))
+        if(size>(3145728*2) && size<=(3145728*3))
             return DIVSIZE.NORMAL
-        if(size>(3932160*2) && size<=(3932160*3))
+        if(size>(3145728*3) && size<=(3145728*4))
             return DIVSIZE.BIG
-        if(size>(3932160*3) && size<=(3932160*4))
+        if(size>(3145728*4) && size<=(3145728*5))
             return DIVSIZE.GIANT
     }
 

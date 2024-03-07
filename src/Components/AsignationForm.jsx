@@ -40,7 +40,7 @@ function AsignationForm() {
                 </div>
                 
                 <div className="flex justify-center">
-                    <button className="mt-2 mb-4">
+                    <button className="mt-2 mb-4 text-white bg-teal-600 w-20 p-1 rounded">
                         Assign
                     </button>
                 </div>

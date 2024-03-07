@@ -26,9 +26,9 @@ function PartitionRowsList(props){
             <table className="w-full max-w-full border-collapse">
             <thead>
                 <tr>
-                    <th className="max-w-[15%] w-full border border-white text-center font-semibold text-white bg-teal-950 sticky top-0 z-10">#</th>
-                    <th className="max-w-[60%] w-full border border-white text-center font-semibold text-white bg-teal-950 sticky top-0 z-10">Size</th>
-                    <th className="max-w-[25%] w-full border border-white text-center font-semibold text-white bg-teal-950 sticky top-0 z-10">Actions</th>
+                    <th className="max-w-[15%] w-full border border-white text-center font-semibold text-teal-600 bg-white sticky top-0 z-10">#</th>
+                    <th className="max-w-[60%] w-full border border-white text-center font-semibold text-teal-600 bg-white sticky top-0 z-10">Size</th>
+                    <th className="max-w-[25%] w-full border border-white text-center font-semibold text-teal-600 bg-white sticky top-0 z-10">Actions</th>
                 </tr>
             </thead>
             <tbody>
