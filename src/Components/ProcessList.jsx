@@ -19,27 +19,31 @@ function ProcessList() {
   const [addedPIDs, SetAddedPIDs] = useState(new Set());
 
   const addPIDRED = (PID) => {
-    SetRedsPIDs((previousState) => new Set([...previousState, PID]));
+    SetRedsPIDs((redsPIDs) => new Set([...redsPIDs, PID]));
   };
 
   const addPIDGREEN = (PID) => {
-    SetGreensPIDs((previousState) => new Set([...previousState, PID]));
+    SetGreensPIDs((greensPIDs) => new Set([...greensPIDs, PID]));
   };
 
   const addADDEDPIDS = (PID) => {
-    SetAddedPIDs((previousState) => new Set([...previousState, PID]));
+    SetAddedPIDs((addedPIDs) => new Set([...addedPIDs, PID]));
   };
 
   const removePIDRED = (PID) => {
-    SetRedsPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
+    SetRedsPIDs((redsPIDs) => new Set([...redsPIDs].filter((x) => x != PID)));
   };
 
   const removePIDGREEN = (PID) => {
-    SetRedsPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
+    SetRedsPIDs(
+      (greensPIDs) => new Set([...greensPIDs].filter((x) => x != PID))
+    );
   };
 
   const removeADDEDPIDs = (PID) => {
-    SetAddedPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
+    SetAddedPIDs(
+      (addedPIDs) => new Set([...addedPIDs].filter((x) => x != PID))
+    );
   };
 
   function addToPartition(PID, size) {
@@ -105,27 +109,24 @@ function ProcessList() {
     }
   }
 
-  function retrieveFromPartition(PID, initial, final, size) {
+  function retrieveFromPartition(PID) {
     if (!partitionsArray.length) {
       addPIDRED(PID);
       return;
     }
-
     if (addedPIDs.has(PID)) {
-      let array = [...partitionsArray];
-      let foundIndex = array.findIndex((x) => x.PID == PID);
-      array[foundIndex] = {
-        name: "",
-        pid: "",
-        lo: false,
-        initial_position: initial,
-        final_position: final,
-        size: size,
-      };
+      let array = partitionsArray.map((partition) => {
+        if (partition.pid == PID) {
+          partition.pid = "";
+          partition.lo = false;
+        }
+        return partition;
+      });
       setPartitionsArray(array);
+
+      removePIDGREEN(PID);
       removeADDEDPIDs(PID);
       removePIDRED(PID);
-      removePIDGREEN(PID);
       return;
     }
   }
@@ -133,13 +134,16 @@ function ProcessList() {
   const listProcess = tasks.map((process, i) => {
     return (
       <tr
-        className={`${redsPIDs.has(process.PID) && "bg-red-500"} 
-        ${greensPIDs.has(process.PID) && "bg-emerald-700"} 
+        className={`${
+          redsPIDs.has(process.PID) &&
+          !addedPIDs.has(process.PID) &&
+          " bg-red-500"
+        } " "
         ${
-          !greensPIDs.has(process.PID) &&
-          !redsPIDs.has(process.PID) &&
-          "bg-transparent"
-        } `}
+          greensPIDs.has(process.PID) &&
+          addedPIDs.has(process.PID) &&
+          " bg-emerald-700"
+        }`}
         key={i}
       >
         <td className="max-w-[15%] w-[15%] border border-white text-center font-normal text-white">
@@ -161,14 +165,7 @@ function ProcessList() {
           </button>
 
           <button
-            onClick={() =>
-              retrieveFromPartition(
-                process.PID,
-                process.initial_position,
-                process.final_position,
-                process.size
-              )
-            }
+            onClick={() => retrieveFromPartition(process.PID)}
             className="p-1 scale-125"
           >
             <Stop className="hover:text-teal-600" />
