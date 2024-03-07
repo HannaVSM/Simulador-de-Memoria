@@ -18,6 +18,38 @@ export const GlobalProvider = ({ children }) => {
   const [partitionsArray, setPartitionsArray] = useState([]);
   const [fitAlgorithm, setFitAlgorithm] = useState("first");
 
+  const [redsPIDs, SetRedsPIDs] = useState(new Set());
+  const [greensPIDs, SetGreensPIDs] = useState(new Set());
+  const [addedPIDs, SetAddedPIDs] = useState(new Set());
+
+  const addPIDRED = (PID) => {
+    SetRedsPIDs((redsPIDs) => new Set([...redsPIDs, PID]));
+  };
+
+  const addPIDGREEN = (PID) => {
+    SetGreensPIDs((greensPIDs) => new Set([...greensPIDs, PID]));
+  };
+
+  const addADDEDPIDS = (PID) => {
+    SetAddedPIDs((addedPIDs) => new Set([...addedPIDs, PID]));
+  };
+
+  const removePIDRED = (PID) => {
+    SetRedsPIDs((redsPIDs) => new Set([...redsPIDs].filter((x) => x != PID)));
+  };
+
+  const removePIDGREEN = (PID) => {
+    SetRedsPIDs(
+      (greensPIDs) => new Set([...greensPIDs].filter((x) => x != PID))
+    );
+  };
+
+  const removeADDEDPIDs = (PID) => {
+    SetAddedPIDs(
+      (addedPIDs) => new Set([...addedPIDs].filter((x) => x != PID))
+    );
+  };
+
   const addTask = (task) => {
     dispatch({
       type: "ADD_PROCESS",
@@ -53,6 +85,18 @@ export const GlobalProvider = ({ children }) => {
         setPartitionsArray,
         fitAlgorithm,
         setFitAlgorithm,
+        addPIDRED,
+        addPIDGREEN,
+        addADDEDPIDS,
+        removePIDRED,
+        removePIDGREEN,
+        removeADDEDPIDs,
+        SetRedsPIDs,
+        SetGreensPIDs,
+        SetAddedPIDs,
+        redsPIDs,
+        greensPIDs,
+        addedPIDs,
       }}
     >
       {children}

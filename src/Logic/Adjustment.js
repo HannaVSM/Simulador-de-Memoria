@@ -8,8 +8,10 @@ export function FirstFit(program, partitions) {
       partitions[i].lo = true;
       break;
     }
+    if (i == numberPartitionsT - 1)
+      return { result: false, memory: partitions };
   }
-  // console.log(partitions);
+
   return { result: true, memory: partitions };
 }
 

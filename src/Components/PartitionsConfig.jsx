@@ -7,8 +7,14 @@ function PartitionConfig({ memType }) {
   const MAX_PARTITIONS_ROWS = 15360;
   const MAX_PARTITIONS_SIZE = 15360;
 
-  const { changeMemMapBuild, setPartitionsArray, setFitAlgorithm } =
-    useGlobalState();
+  const {
+    changeMemMapBuild,
+    setPartitionsArray,
+    setFitAlgorithm,
+    SetRedsPIDs,
+    SetGreensPIDs,
+    SetAddedPIDs,
+  } = useGlobalState();
 
   const [wiggle, setWiggle] = useState(false); //wiggle animation for the buttons
 
@@ -166,6 +172,9 @@ function PartitionConfig({ memType }) {
 
         setPartitionsArray(MemoryFixed(sizeValueFixed).partitions);
         changeMemMapBuild("Fixed");
+        SetRedsPIDs(new Set());
+        SetGreensPIDs(new Set());
+        SetAddedPIDs(new Set());
         break;
 
       case "Variable":

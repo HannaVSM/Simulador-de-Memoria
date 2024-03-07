@@ -3,7 +3,7 @@ import Stop from "../IconComponents/Stop";
 import Trash from "../IconComponents/Trash";
 import { useGlobalState } from "../context/GlobalState";
 import { useState } from "react";
-import { FirstFit, BestFit, WorstFit } from "../Logic/Adjustment";
+import { FirstFit, BestFit, WorstFit, DinamicFit } from "../Logic/Adjustment";
 
 function ProcessList() {
   const {
@@ -12,39 +12,16 @@ function ProcessList() {
     partitionsArray,
     setPartitionsArray,
     fitAlgorithm,
+    addPIDRED,
+    addPIDGREEN,
+    addADDEDPIDS,
+    removePIDRED,
+    removePIDGREEN,
+    removeADDEDPIDs,
+    redsPIDs,
+    greensPIDs,
+    addedPIDs,
   } = useGlobalState();
-
-  const [redsPIDs, SetRedsPIDs] = useState(new Set());
-  const [greensPIDs, SetGreensPIDs] = useState(new Set());
-  const [addedPIDs, SetAddedPIDs] = useState(new Set());
-
-  const addPIDRED = (PID) => {
-    SetRedsPIDs((redsPIDs) => new Set([...redsPIDs, PID]));
-  };
-
-  const addPIDGREEN = (PID) => {
-    SetGreensPIDs((greensPIDs) => new Set([...greensPIDs, PID]));
-  };
-
-  const addADDEDPIDS = (PID) => {
-    SetAddedPIDs((addedPIDs) => new Set([...addedPIDs, PID]));
-  };
-
-  const removePIDRED = (PID) => {
-    SetRedsPIDs((redsPIDs) => new Set([...redsPIDs].filter((x) => x != PID)));
-  };
-
-  const removePIDGREEN = (PID) => {
-    SetRedsPIDs(
-      (greensPIDs) => new Set([...greensPIDs].filter((x) => x != PID))
-    );
-  };
-
-  const removeADDEDPIDs = (PID) => {
-    SetAddedPIDs(
-      (addedPIDs) => new Set([...addedPIDs].filter((x) => x != PID))
-    );
-  };
 
   function addToPartition(PID, size) {
     if (!partitionsArray.length) {
@@ -91,6 +68,25 @@ function ProcessList() {
 
     if (fitAlgorithm == "worst") {
       const { result, memory } = WorstFit(
+        { PID: PID, size: size },
+        partitionsArray
+      );
+      if (result) {
+        let arrayparticiones = [...memory];
+        setPartitionsArray(arrayparticiones);
+        addADDEDPIDS(PID);
+        removePIDRED(PID);
+        addPIDGREEN(PID);
+        return;
+      } else {
+        removePIDGREEN(PID);
+        addPIDRED(PID);
+        return;
+      }
+    }
+
+    if (fitAlgorithm == "dinamic") {
+      const { result, memory } = DinamicFit(
         { PID: PID, size: size },
         partitionsArray
       );
