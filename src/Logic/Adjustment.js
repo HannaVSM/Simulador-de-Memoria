@@ -67,65 +67,52 @@ export function BestFit(program, partitions) {
 }
 
 export function DinamicFit(program, partitions) {
+
   let tamPartition = program.size;
-  let resultBool = true;
+
   let position = 1048577;
   let positionI = position;
   let positionF = 0;
-  var indPD = partitions.length - 1;
 
-  if (partitions.length > 2) {
-    let freePartitions = partitions.slice(0, -1);
-    let { result, memory } = FirstFit(program, freePartitions);
-    resultBool = result; //false
-    if (!result) {
-      if (program.size > partitions[indPD].size) {
-        resultBool = false;
-      } else {
-        var objPartitions = [];
-        positionF = positionI + tamPartition;
-        objPartitions = {
-          name: "",
-          pid: program.PID,
-          lo: true,
-          initial_position: positionI,
-          final_position: positionF,
-          size: tamPartition,
-        };
-        positionI = positionF + 1;
-        partitions[indPD].initial_position = positionF + 1;
-        partitions[indPD].size -= tamPartition;
-        partitions.splice(indPD, 0, objPartitions);
-      }
-    } else {
-      memory.push(partitions[partitions.length - 1]);
-      return { result: true, memory: memory };
+  var objPartitions = [];
+  positionF = positionI + tamPartition;
+  objPartitions = {
+    name: "",
+    pid: program.PID,
+    lo: true,
+    initial_position: positionI,
+    final_position: positionF,
+    size: tamPartition,
+  };
+  positionI = positionF + 1;
+  console.log("tam  " + tamPartition)
+  
+  //memory dinamic
+  var indMD = partitions.length - 1;
+  partitions[indMD].initial_position = positionF + 1;
+  partitions[indMD].size -= tamPartition;
+
+  partitions.splice(indMD, 0, objPartitions);
+
+  console.log(partitions);
+  console.log("A");
+
+  return { result: true, memory: partitions };
+
+}
+
+export function DinamicCompaction(partitions) {
+  let numberPartitionsT = partitions.length;
+
+  for(let i =0; i < numberPartitionsT; i++){
+    if (partitions[i].lo == false && ! partitions[i].final_position == 16777216) {
+      console.log("A");
+      partitions.splice([i], 1);
     }
   }
 
-  if (resultBool) {
-    var objPartitions = [];
-    positionF = positionI + tamPartition;
-    objPartitions = {
-      name: "",
-      pid: program.PID,
-      lo: true,
-      initial_position: positionI,
-      final_position: positionF,
-      size: tamPartition,
-    };
-    positionI = positionF + 1;
-    partitions[indPD].initial_position = positionF + 1;
-    partitions[indPD].size -= tamPartition;
-    partitions.splice(indPD, 0, objPartitions);
-  }
-
-  //memory dinamic
-
-  // console.log(partitions);
-  // console.log("A");
+  console.log(partitions);
 
   return { result: true, memory: partitions };
-}
 
-export function DinamicCompaction(partitions) {}
+}
