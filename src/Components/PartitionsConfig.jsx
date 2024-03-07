@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { MemoryFixed, MemoryVariable } from "../Logic/Memory";
+import { MemoryFixed, MemoryVariable, MemoryDinamic } from "../Logic/Memory";
 import PartitionRowsList from "./PartitionRowsList";
 import { useGlobalState } from "../context/GlobalState";
 
@@ -11,9 +11,7 @@ function PartitionConfig({ memType }) {
     changeMemMapBuild,
     setPartitionsArray,
     setFitAlgorithm,
-    SetRedsPIDs,
-    SetGreensPIDs,
-    SetAddedPIDs,
+    resetProcessListColor,
   } = useGlobalState();
 
   const [wiggle, setWiggle] = useState(false); //wiggle animation for the buttons
@@ -36,7 +34,7 @@ function PartitionConfig({ memType }) {
   //clear all every change of mem type
   useEffect(() => {
     clear();
-    setPartitionsArray([]);
+    setPartitionsArray(MemoryDinamic().partitions);
   }, [memType]);
 
   function clear() {
@@ -172,9 +170,7 @@ function PartitionConfig({ memType }) {
 
         setPartitionsArray(MemoryFixed(sizeValueFixed).partitions);
         changeMemMapBuild("Fixed");
-        SetRedsPIDs(new Set());
-        SetGreensPIDs(new Set());
-        SetAddedPIDs(new Set());
+        resetProcessListColor();
         break;
 
       case "Variable":
@@ -195,6 +191,7 @@ function PartitionConfig({ memType }) {
 
   const handleChangeFit = (event) => {
     setFitAlgorithm(event.target.value);
+    resetProcessListColor();
     setPartitionsArray([]);
   };
 

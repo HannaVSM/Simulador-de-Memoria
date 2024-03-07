@@ -51,10 +51,19 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const addTask = (task) => {
-    dispatch({
-      type: "ADD_PROCESS",
-      payload: task,
+    const ArrayPIDS = state.tasks.map((task) => {
+      return task.PID;
     });
+
+    const isDuplicated = ArrayPIDS.some((currentPID) => {
+      return currentPID == task.PID;
+    });
+    if (!isDuplicated) {
+      dispatch({
+        type: "ADD_PROCESS",
+        payload: task,
+      });
+    }
   };
 
   const deleteTask = (PID) => {
@@ -71,6 +80,12 @@ export const GlobalProvider = ({ children }) => {
     if (memType === "Variable") setMemMapBuild("Variable");
     if (memType === "Dinamic") setMemMapBuild("Dinamic");
     if (memType === "Default") setMemMapBuild("Default");
+  };
+
+  const resetProcessListColor = () => {
+    SetRedsPIDs(new Set());
+    SetGreensPIDs(new Set());
+    SetAddedPIDs(new Set());
   };
 
   return (
@@ -97,6 +112,7 @@ export const GlobalProvider = ({ children }) => {
         redsPIDs,
         greensPIDs,
         addedPIDs,
+        resetProcessListColor,
       }}
     >
       {children}

@@ -2,7 +2,6 @@ import RightArrow from "../IconComponents/RightArrow";
 import Stop from "../IconComponents/Stop";
 import Trash from "../IconComponents/Trash";
 import { useGlobalState } from "../context/GlobalState";
-import { useState } from "react";
 import { FirstFit, BestFit, WorstFit, DinamicFit } from "../Logic/Adjustment";
 
 function ProcessList() {
@@ -170,6 +169,7 @@ function ProcessList() {
           <button
             onClick={() => {
               deleteTask(process.PID);
+              retrieveFromPartition(process.PID);
               removePIDRED(process.PID);
               removePIDGREEN(process.PID);
             }}

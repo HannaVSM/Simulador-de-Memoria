@@ -2,25 +2,23 @@ import { useState } from "react";
 import PartitionConfig from "./PartitionsConfig";
 import ProcessList from "./ProcessList";
 import { useGlobalState } from "../context/GlobalState";
-import { MemoryDinamic } from "../Logic/Memory";
 
 function Management() {
   const [memTypeSelected, setMemTypeSelected] = useState("");
   const {
     changeMemMapBuild,
     setFitAlgorithm,
-    partitionsArray,
+    resetProcessListColor,
     setPartitionsArray,
   } = useGlobalState();
 
   const handleSelectChange = (event) => {
+    resetProcessListColor();
+    setPartitionsArray([]);
     setMemTypeSelected(event.target.value);
     if (event.target.value == "Dinamic_Memory") {
       changeMemMapBuild("Dinamic");
       setFitAlgorithm("dinamic");
-      setPartitionsArray(
-        MemoryDinamic({ pid: "LOL", size: 2048000 }, partitionsArray)
-      );
     } else {
       changeMemMapBuild("Default");
       setFitAlgorithm("first");

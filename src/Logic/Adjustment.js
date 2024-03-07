@@ -1,5 +1,5 @@
 export function FirstFit(program, partitions) {
-  console.log(program);
+  // console.log(program);
   let numberPartitionsT = partitions.length;
   let prMemorysz = program.size;
   for (var i = 0; i < numberPartitionsT; i++) {
@@ -16,8 +16,8 @@ export function FirstFit(program, partitions) {
 }
 
 export function WorstFit(program, partitions) {
-  console.log(program);
-  console.log(partitions);
+  // console.log(program);
+  // console.log(partitions);
   let numberPartitionsT = partitions.length;
   let prMemorysz = program.size;
   let rPartitions = partitions.reverse();
@@ -34,7 +34,7 @@ export function WorstFit(program, partitions) {
 }
 
 export function BestFit(program, partitions) {
-  console.log(partitions);
+  // console.log(partitions);
   partitions.sort(function (a, b) {
     return a.size - b.size;
   });
@@ -57,6 +57,8 @@ export function BestFit(program, partitions) {
     var objSO = partitions.splice(indSO, 1)[0];
     partitions.unshift(objSO);
   }
-  console.log(partitions);
+  // console.log(partitions);
   return { result: true, memory: partitions };
 }
+
+export function DinamicFit() {}
