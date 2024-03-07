@@ -46,6 +46,15 @@ export function BestFit(program, partitions) {
       break;
     }
   }
-  // console.log(partitions);
+  var indSO = partitions.findIndex(function (obj) {
+    return obj.pid === "SO";
+  });
+
+  // Mueve el objeto encontrado al principio del array
+  if (indSO !== -1) {
+    var objSO = partitions.splice(indSO, 1)[0];
+    partitions.unshift(objSO);
+  }
+  console.log(partitions);
   return { result: true, memory: partitions };
 }

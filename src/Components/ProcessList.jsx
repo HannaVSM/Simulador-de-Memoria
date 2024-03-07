@@ -16,6 +16,7 @@ function ProcessList() {
 
   const [redsPIDs, SetRedsPIDs] = useState(new Set());
   const [greensPIDs, SetGreensPIDs] = useState(new Set());
+  const [addedPIDs, SetAddedPIDs] = useState(new Set());
 
   const addPIDRED = (PID) => {
     SetRedsPIDs((previousState) => new Set([...previousState, PID]));
@@ -25,12 +26,20 @@ function ProcessList() {
     SetGreensPIDs((previousState) => new Set([...previousState, PID]));
   };
 
+  const addADDEDPIDS = (PID) => {
+    SetAddedPIDs((previousState) => new Set([...previousState, PID]));
+  };
+
   const removePIDRED = (PID) => {
     SetRedsPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
   };
 
   const removePIDGREEN = (PID) => {
     SetRedsPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
+  };
+
+  const removeADDEDPIDs = (PID) => {
+    SetAddedPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
   };
 
   function addToPartition(PID, size) {
@@ -47,6 +56,7 @@ function ProcessList() {
       if (result) {
         let arrayparticiones = [...memory];
         setPartitionsArray(arrayparticiones);
+        addADDEDPIDS(PID);
         removePIDRED(PID);
         addPIDGREEN(PID);
         return;
@@ -64,6 +74,7 @@ function ProcessList() {
       if (result) {
         let arrayparticiones = [...memory];
         setPartitionsArray(arrayparticiones);
+        addADDEDPIDS(PID);
         removePIDRED(PID);
         addPIDGREEN(PID);
         return;
@@ -82,6 +93,7 @@ function ProcessList() {
       if (result) {
         let arrayparticiones = [...memory];
         setPartitionsArray(arrayparticiones);
+        addADDEDPIDS(PID);
         removePIDRED(PID);
         addPIDGREEN(PID);
         return;
@@ -93,7 +105,30 @@ function ProcessList() {
     }
   }
 
-  function retrieveFromPartition(PID) {}
+  function retrieveFromPartition(PID, initial, final, size) {
+    if (!partitionsArray.length) {
+      addPIDRED(PID);
+      return;
+    }
+
+    if (addedPIDs.has(PID)) {
+      let array = [...partitionsArray];
+      let foundIndex = array.findIndex((x) => x.PID == PID);
+      array[foundIndex] = {
+        name: "",
+        pid: "",
+        lo: false,
+        initial_position: initial,
+        final_position: final,
+        size: size,
+      };
+      setPartitionsArray(array);
+      removeADDEDPIDs(PID);
+      removePIDRED(PID);
+      removePIDGREEN(PID);
+      return;
+    }
+  }
 
   const listProcess = tasks.map((process, i) => {
     return (
@@ -120,11 +155,22 @@ function ProcessList() {
           <button
             onClick={() => addToPartition(process.PID, process.size)}
             className="p-1"
+            disabled={addedPIDs.has(process.PID)}
           >
             <RightArrow className="hover:text-teal-600" />
           </button>
 
-          <button className="p-1 scale-125">
+          <button
+            onClick={() =>
+              retrieveFromPartition(
+                process.PID,
+                process.initial_position,
+                process.final_position,
+                process.size
+              )
+            }
+            className="p-1 scale-125"
+          >
             <Stop className="hover:text-teal-600" />
           </button>
 

@@ -333,18 +333,6 @@ function PartitionConfig({ memType }) {
               >
                 Select an adjustment algorithm
               </h2>
-              <select
-                name="tipo-mem"
-                onChange={handleChangeFit}
-                className={`${
-                  compactionBoolean && "hidden"
-                } max-w-72 w-full rounded text-teal-600 text-center h-8`}
-                id="select-tipo-mem"
-              >
-                <option value="first">First Fit</option>
-                <option value="best">Best Fit</option>
-                <option value="worst">Worst Fit</option>
-              </select>
             </div>
 
             <div
@@ -356,17 +344,6 @@ function PartitionConfig({ memType }) {
                 type="button"
                 value="Compact"
                 className="max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-teal-600 hover:scale-105"
-              />
-            </div>
-
-            <div className="py-2 my-2 flex flex-row gap-2 justify-center items-center w-full flex-wrap">
-              <input
-                type="button"
-                value="Save"
-                onClick={() => saveBtn("Dinamic")}
-                className={`${
-                  compactionBoolean && "hidden"
-                } max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-teal-600 hover:scale-105`}
               />
             </div>
           </div>
