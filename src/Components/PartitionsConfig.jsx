@@ -166,7 +166,6 @@ function PartitionConfig({ memType }) {
 
         setPartitionsArray(MemoryFixed(sizeValueFixed).partitions);
         changeMemMapBuild("Fixed");
-        clear();
         break;
 
       case "Variable":
@@ -187,6 +186,7 @@ function PartitionConfig({ memType }) {
 
   const handleChangeFit = (event) => {
     setFitAlgorithm(event.target.value);
+    setPartitionsArray([]);
   };
 
   const renderComponent = () => {

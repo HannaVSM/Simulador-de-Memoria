@@ -3,6 +3,7 @@ import Stop from "../IconComponents/Stop";
 import Trash from "../IconComponents/Trash";
 import { useGlobalState } from "../context/GlobalState";
 import { useState } from "react";
+import { FirstFit, BestFit, WorstFit } from "../Logic/Adjustment";
 
 function ProcessList() {
   const {
@@ -13,13 +14,28 @@ function ProcessList() {
     fitAlgorithm,
   } = useGlobalState();
 
-  const [redFade, setRedFade] = useState(false);
-  const [greenFade, SetGreenFade] = useState(false);
+  const [redsPIDs, SetRedsPIDs] = useState(new Set());
+  const [greensPIDs, SetGreensPIDs] = useState(new Set());
+
+  const addPIDRED = (PID) => {
+    SetRedsPIDs((previousState) => new Set([...previousState, PID]));
+  };
+
+  const addPIDGREEN = (PID) => {
+    SetGreensPIDs((previousState) => new Set([...previousState, PID]));
+  };
+
+  const removePIDRED = (PID) => {
+    SetRedsPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
+  };
+
+  const removePIDGREEN = (PID) => {
+    SetRedsPIDs((prev) => new Set([...prev].filter((x) => x !== PID)));
+  };
 
   function addToPartition(PID, size) {
     if (!partitionsArray.length) {
-      setRedFade(true);
-      console.log(redFade);
+      addPIDRED(PID);
       return;
     }
     if (fitAlgorithm == "first") {
@@ -27,11 +43,17 @@ function ProcessList() {
         { PID: PID, size: size },
         partitionsArray
       );
+
       if (result) {
-        setPartitionsArray(memory.partitions);
-        SetGreenFade(true);
+        let arrayparticiones = [...memory];
+        setPartitionsArray(arrayparticiones);
+        removePIDRED(PID);
+        addPIDGREEN(PID);
+        return;
       } else {
-        setRedFade(true);
+        removePIDGREEN(PID);
+        addPIDRED(PID);
+        return;
       }
     }
     if (fitAlgorithm == "best") {
@@ -40,24 +62,49 @@ function ProcessList() {
         partitionsArray
       );
       if (result) {
-        setPartitionsArray(memory.partitions);
-        SetGreenFade(true);
+        let arrayparticiones = [...memory];
+        setPartitionsArray(arrayparticiones);
+        removePIDRED(PID);
+        addPIDGREEN(PID);
+        return;
       } else {
-        setRedFade(true);
+        removePIDGREEN(PID);
+        addPIDRED(PID);
+        return;
+      }
+    }
+
+    if (fitAlgorithm == "worst") {
+      const { result, memory } = WorstFit(
+        { PID: PID, size: size },
+        partitionsArray
+      );
+      if (result) {
+        let arrayparticiones = [...memory];
+        setPartitionsArray(arrayparticiones);
+        removePIDRED(PID);
+        addPIDGREEN(PID);
+        return;
+      } else {
+        removePIDGREEN(PID);
+        addPIDRED(PID);
+        return;
       }
     }
   }
 
+  function retrieveFromPartition(PID) {}
+
   const listProcess = tasks.map((process, i) => {
     return (
       <tr
-        onAnimationEnd={() => {
-          setRedFade(false);
-          setRedFade(true);
-        }}
-        className={`${redFade && "animate-redfade"} ${
-          greenFade && "animate-greenfade"
-        }snap-end`}
+        className={`${redsPIDs.has(process.PID) && "bg-red-500"} 
+        ${greensPIDs.has(process.PID) && "bg-emerald-700"} 
+        ${
+          !greensPIDs.has(process.PID) &&
+          !redsPIDs.has(process.PID) &&
+          "bg-transparent"
+        } `}
         key={i}
       >
         <td className="max-w-[15%] w-[15%] border border-white text-center font-normal text-white">
@@ -72,13 +119,7 @@ function ProcessList() {
         <td className="max-w-[25%] w-[25%] border border-white text-center font-normal text-white">
           <button
             onClick={() => addToPartition(process.PID, process.size)}
-            onAnimationEnd={() => {
-              setRedFade(false);
-              setRedFade(true);
-            }}
-            className={`${redFade && "animate-redfade"} ${
-              greenFade && "animate-greenfade"
-            } p-1`}
+            className="p-1"
           >
             <RightArrow className="hover:text-teal-600" />
           </button>
@@ -87,7 +128,14 @@ function ProcessList() {
             <Stop className="hover:text-teal-600" />
           </button>
 
-          <button className="p-1" onClick={() => deleteTask(process.PID)}>
+          <button
+            onClick={() => {
+              deleteTask(process.PID);
+              removePIDRED(process.PID);
+              removePIDGREEN(process.PID);
+            }}
+            className="p-1"
+          >
             <Trash className="hover:text-teal-600" />
           </button>
         </td>
