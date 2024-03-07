@@ -19,6 +19,7 @@ function ProcessList() {
   function addToPartition(PID, size) {
     if (!partitionsArray.length) {
       setRedFade(true);
+      console.log(redFade);
       return;
     }
     if (fitAlgorithm == "first") {
