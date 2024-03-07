@@ -4,8 +4,8 @@ import { useGlobalState } from "../context/GlobalState";
 function AsignationForm() {
     const { addTask } = useGlobalState();
     
-    const [task, setTask] = useState();
-    const [size, setSize] = useState();
+    const [task, setTask] = useState("");
+    const [size, setSize] = useState("");
     const [counter, setCounter] = useState(1);
     
     const onSubmit = (e) => {
@@ -14,7 +14,7 @@ function AsignationForm() {
         addTask({
             PID: "P" + counter,
             task,
-            size: +size
+            size: +size*1024
         });
 
         setCounter(counter + 1);
@@ -35,7 +35,7 @@ function AsignationForm() {
                 
                 <div>
                     <label className="font-normal mx-1.5 ml-4">Size: </label>
-                    <input className="bg-white text-black px-1 py-0 mr-2 my-2" type="number" onChange={(e) => setSize(e.target.value)} value={size*1024}/>
+                    <input className="bg-white text-black px-1 py-0 mr-2 my-2" type="number" onChange={(e) => setSize(e.target.value)} value={size}/>
                     <span> KiB</span>
                 </div>
                 

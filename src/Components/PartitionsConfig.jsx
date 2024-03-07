@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef} from "react";
-import { MemoryFixed } from "../Logic/Memory";
+import { MemoryFixed, MemoryVariable } from "../Logic/Memory";
 import PartitionRowsList from "./PartitionRowsList"
 import { useGlobalState } from "../context/GlobalState";
 
@@ -9,7 +9,7 @@ function PartitionConfig({memType}){
   const MAX_PARTITIONS_ROWS = 15360;
   const MAX_PARTITIONS_SIZE = 15360;
 
-  const {changeMemMapBuild} = useGlobalState()
+  const {changeMemMapBuild, setPartitionsArray} = useGlobalState()
 
   const [wiggle, setWiggle] = useState(false); //wiggle animation for the buttons
 
@@ -29,12 +29,17 @@ function PartitionConfig({memType}){
 
   //clear all every change of mem type
   useEffect(() => {
+    clear(); 
+    setPartitionsArray([])
+  }, [memType])
+
+  function clear(){
     setSizeValueFixed('');
     setNumberPartitionsValue('');
     setSizeValueVariable('');
     setPartitions_rows([]);
     setPartitions_rows_sum_ids(0);
-  }, [memType])
+  }
   
 
   //update size and partitions summatory config
@@ -111,8 +116,9 @@ function PartitionConfig({memType}){
           setWiggle(true);
           break;
         }
-        sessionStorage.setItem("partitions", JSON.stringify(MemoryFixed(sizeValueFixed)));
-        changeMemMapBuild("Fixed")
+        setPartitionsArray(MemoryFixed(sizeValueFixed));
+        changeMemMapBuild("Fixed");
+        clear();
         break; 
 
       case "Variable":
@@ -120,7 +126,9 @@ function PartitionConfig({memType}){
           setWiggle(true);
           break;
         }
-          sessionStorage.setItem("partitions_parameters", JSON.stringify(partitions_rows))
+          // setPartitionsArray(partitions_rows);
+          // console.log(partitions_rows)
+          VariableMemory(partitions_rows)
           changeMemMapBuild("Variable")
         break;
       case "Dinamic":

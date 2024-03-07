@@ -1,20 +1,20 @@
-const memory = {
-  size: 16777216,
-  partitions: {
-    partition_so: {
-      name: "Sistema operativo",
-      pid: "SO",
-      lo: true,
-      initial_position: 0,
-      final_position: 1048576,
-      size: 1048576,
-    },
-  },
-};
-
 export function MemoryFixed(tamPartitionsKib) {
   // ¿de qué tamaño quiere sus particiones en kib?
-  // let tamPartitionsKib = localStorage.fixed_partitions_size;
+  // let tamPartitionsKib = localStorage.fixed_partitions_size;\
+  const memory = {
+    size: 16777216,
+    partitions: {
+      partition_so: {
+        name: "Sistema operativo",
+        pid: "SO",
+        lo: true,
+        initial_position: 0,
+        final_position: 1048576,
+        size: 1048576,
+      },
+    },
+  };
+
   let tamPartitions = tamPartitionsKib * 1024;
 
   const userMemory = memory.size - memory.partitions.partition_so.size;
@@ -35,21 +35,21 @@ export function MemoryFixed(tamPartitionsKib) {
       lo: false,
       initial_position: positionI,
       final_position: positionF,
-      size: 3145728,
+      size: tamPartitions,
     };
     positionI = positionF + 1;
   }
 
   memory.partitions = Object.assign([], memory.partitions, objPartitions2);
 
-
-  var arrayDeJson = Object.keys(memory.partitions).map(function(key) {
+  var arrayDeJson = Object.keys(memory.partitions).map(function (key) {
     return memory.partitions[key];
   });
-  
-  console.log(arrayDeJson);
+
   memory.partitions = arrayDeJson;
   console.log(memory);
 
   return memory;
 }
+
+export function MemoryDinamic() {}

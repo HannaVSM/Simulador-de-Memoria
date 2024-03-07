@@ -59,8 +59,8 @@ function ProgramsDefault() {
             <div className='m-2 mr-4 border border-white'>
                 <ul className='w-full max-w-full'>
                     {programsDefault.map((item, index) => (
-                        <div className='bg-white m-2 flex justify-center'>
-                            <li key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }} className='text-black w-full text-center'>
+                        <div key={index} className='bg-white m-2 flex justify-center'>
+                            <li onClick={() => handleClick(item)} style={{ cursor: 'pointer' }} className='text-black w-full text-center'>
                                 {item}
                             </li>
                         </div>

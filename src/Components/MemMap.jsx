@@ -3,9 +3,7 @@ import { useGlobalState } from "../context/GlobalState";
 
 function MemMap() {
 
-    const {memMapBuild} = useGlobalState()
-
-    const [partitions, setPartitions] = useState([]);
+    const {memMapBuild, partitionsArray} = useGlobalState()
     
     const DIVSIZE = {
         "SMALL":"max-h-20",
@@ -14,30 +12,32 @@ function MemMap() {
         "GIANT":"max-h-32",
     }
 
-    
-    useEffect(() => {
-        let partts = JSON.parse(sessionStorage.getItem("partitions"));
-        setPartitions(partts?.partitions);        
-        console.log("aaaaa")
-    }, [sessionStorage.getItem("partitions")]);//Aca falta escuchar otro elemento que lo actualice al cambiar los valores del size y al poner programas en el array
-
     const memoryCanvas = () =>{
         return(
             <>
             <div id="Memory" className="mt-4 w-full max-w-[90%] h-[40rem] max-h-[40rem] flex flex-col outline outline-white py-4 overflow-auto">
                 {partitionsTable}
             </div>
-
             <div id="MemoryState" className="mb-4 flex flex-row w-full max-w-[90%] justify-start items-center outline outline-white text-white">
                 <div className="flex flex-row h-full justify-center items-center border-r border-white">
                     <p className="text-center p-2">Estado de la memoria</p>
                 </div>
                 <div className="flex flex-col h-full justify-start items-start grow">
                     <div className="flex flex-row border-b border-white w-full">
-                        <span className="p-2 w-24">Ocuppied:</span><p className="p-2">{ }</p>
+                        <span className="p-2 w-24">Ocuppied:</span><p className="p-2">{
+                        // partitionsArray.partitions?.reduce((partition,next_partition)=> {
+                        //     if(partition.lo)
+                        //         return partition.size+next_partition.size
+                        // }, 0)
+                        }</p>
                     </div>
                     <div className="flex flex-row ">
-                        <span className="p-2 w-24">Free:</span><p className="p-2">{ }</p>
+                        <span className="p-2 w-24">Free:</span><p className="p-2">{//console.log(partitionsArray.partitions[0].lo)
+                        // partitionsArray?.partitions?.reduce((partition,next_partition)=> {
+                        //     if(!partition.lo)
+                        //         return partition.size+next_partition.size
+                        // }, 0)
+                        }</p>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ function MemMap() {
         )
     }
 
-    const partitionsTable = partitions?.map((partition, i)=>{
+    const partitionsTable = partitionsArray.partitions?.map((partition, i)=>{
         return(
             <div key={i} className={`${divSize(partition.size)} flex flex-row w-full w-max-full h-full justify-center items-center text-white`}>
                 <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
