@@ -51,7 +51,7 @@ function MemMap() {
               <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
                 <div className="text-xs pr-1 ">16777216</div>
               </div>
-              <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center bg-black">
+              <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center bg-teal-600">
                 None
               </div>
             </div>

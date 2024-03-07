@@ -38,7 +38,6 @@ function PartitionConfig({ memType }) {
   }, [memType]);
 
   function clear() {
-    setFitAlgorithm("first");
     setSizeValueFixed("");
     setNumberPartitionsValue("");
     setSizeValueVariable("");
@@ -181,6 +180,7 @@ function PartitionConfig({ memType }) {
         // setPartitionsArray(partitions_rows);
         setPartitionsArray(MemoryVariable(partitions_rows).partitions);
         changeMemMapBuild("Variable");
+        resetProcessListColor();
         break;
       case "Dinamic":
         break;
@@ -191,6 +191,7 @@ function PartitionConfig({ memType }) {
 
   const handleChangeFit = (event) => {
     setFitAlgorithm(event.target.value);
+    console.log("a");
     resetProcessListColor();
     setPartitionsArray([]);
   };

@@ -5,12 +5,8 @@ import { useGlobalState } from "../context/GlobalState";
 
 function Management() {
   const [memTypeSelected, setMemTypeSelected] = useState("");
-  const {
-    changeMemMapBuild,
-    setFitAlgorithm,
-    resetProcessListColor,
-    setPartitionsArray,
-  } = useGlobalState();
+  const { changeMemMapBuild, resetProcessListColor, setPartitionsArray } =
+    useGlobalState();
 
   const handleSelectChange = (event) => {
     resetProcessListColor();
@@ -18,10 +14,8 @@ function Management() {
     setMemTypeSelected(event.target.value);
     if (event.target.value == "Dinamic_Memory") {
       changeMemMapBuild("Dinamic");
-      setFitAlgorithm("dinamic");
     } else {
       changeMemMapBuild("Default");
-      setFitAlgorithm("first");
     }
   };
 

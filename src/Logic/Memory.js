@@ -135,6 +135,6 @@ export function MemoryDinamic() {
   });
 
   memory.partitions = arrayDeJson.reverse();
-  console.log(memory);
+  // console.log(memory);
   return memory;
 }

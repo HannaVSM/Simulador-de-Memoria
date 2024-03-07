@@ -78,8 +78,15 @@ export const GlobalProvider = ({ children }) => {
   const changeMemMapBuild = (memType) => {
     if (memType === "Fixed") setMemMapBuild("Fixed");
     if (memType === "Variable") setMemMapBuild("Variable");
-    if (memType === "Dinamic") setMemMapBuild("Dinamic");
-    if (memType === "Default") setMemMapBuild("Default");
+    if (memType === "Dinamic") {
+      setMemMapBuild("Dinamic");
+      setFitAlgorithm("dinamic");
+      console.log("a");
+    }
+    if (memType === "Default") {
+      setMemMapBuild("Default");
+      setFitAlgorithm("first");
+    }
   };
 
   const resetProcessListColor = () => {
