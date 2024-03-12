@@ -110,15 +110,16 @@ export function DinamicFit(program, partitions) {
 
 
 export function DinamicCompaction(partitions) {
-  let positionI = 0;
+  let position = 1048577;
+  let positionI = position;
   let positionF = 0;
+  let tamPartitions = 0;
 
   let partitionsC = partitions.filter(function(element) {
     for (let i = 0; i < partitions.length; i++) {
       if (element.lo == false && element.final_position !== 16777216) {
         return false;
       }
-
     }
     return true;
 
@@ -126,6 +127,13 @@ export function DinamicCompaction(partitions) {
   
   console.log(partitionsC);
 
+  for (let i = 1; i < partitionsC.length; i++) {
+    tamPartitions = partitionsC[i].size;
+    positionF = positionI + tamPartitions;
+    partitionsC[i].initial_position = positionI;
+    partitionsC[i].final_position = positionF;
+    positionI = positionF +1;
+  }
   return { result: true, memory: partitionsC };
 
 }
