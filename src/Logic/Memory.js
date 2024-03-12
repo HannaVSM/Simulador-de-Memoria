@@ -81,7 +81,7 @@ export function MemoryVariable(partitionsRows) {
     tamPartitions = partitionsRows[i].size * 1024;
     for (var j = 0; j < numberPartitions; j++) {
       positionF = positionI + tamPartitions;
-      objPartitions.unshift({
+      objPartitions.push({
         name: "",
         pid: "",
         lo: false,
@@ -113,7 +113,7 @@ export function MemoryVariable(partitionsRows) {
     memory.partitions.unshift(objSO);
   }
 
-  // console.log(memory.partitions);
+  console.log(memory);
   return memory;
 }
 

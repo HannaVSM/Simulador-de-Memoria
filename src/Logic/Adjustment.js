@@ -37,12 +37,8 @@ export function WorstFit(program, partitions) {
 }
 
 export function BestFit(program, partitions) {
-  // console.log(partitions);
+  console.log(partitions);
   let resultBool = true;
-  partitions.sort(function (a, b) {
-    return a.size - b.size;
-  });
-  // console.log(program);
   let numberPartitionsT = partitions.length;
   let prMemorysz = program.size;
   for (var i = 0; i < numberPartitionsT; i++) {
@@ -62,12 +58,12 @@ export function BestFit(program, partitions) {
     var objSO = partitions.splice(indSO, 1)[0];
     partitions.unshift(objSO);
   }
-  // console.log(partitions);
+  console.log(partitions);
   return { result: resultBool, memory: partitions };
 }
 
 export function DinamicFit(program, partitions) {
-
+  console.log(partitions);
   let tamPartition = program.size;
 
   let position = partitions[partitions.length - 1].initial_position;
@@ -76,10 +72,11 @@ export function DinamicFit(program, partitions) {
 
   if (partitions.length > 2) {
     let dinamicPartition = partitions.pop();
+
     let { result, memory } = BestFit(program, partitions)
-    console.log("result:  ", result)
     if (result) {
       memory.push(dinamicPartition)
+      console.log(memory)
       return { result: result, memory: memory };
     }else{
       memory.push(dinamicPartition)
@@ -96,7 +93,7 @@ export function DinamicFit(program, partitions) {
     size: tamPartition,
   };
   positionI = positionF + 1;
-  console.log("tam  " + tamPartition)
+  // console.log("tam  " + tamPartition)
 
   //memory dinamic
   var indMD = partitions.length - 1;
@@ -105,25 +102,30 @@ export function DinamicFit(program, partitions) {
 
   partitions.splice(indMD, 0, objPartitions);
 
-  console.log(partitions);
-  console.log("A");
+  // console.log(partitions);
+   console.log("A");
 
   return { result: true, memory: partitions };
 }
 
 
 export function DinamicCompaction(partitions) {
-  // let numberPartitionsT = partitions.length;
+  let positionI = 0;
+  let positionF = 0;
 
-  // for(let i =0; i < numberPartitionsT; i++){
-  //   if (partitions[i].lo == false && ! partitions[i].final_position == 16777216) {
-  //     console.log("A");
-  //     partitions.splice([i], 1);
-  //   }
-  // }
+  let partitionsC = partitions.filter(function(element) {
+    for (let i = 0; i < partitions.length; i++) {
+      if (element.lo == false && element.final_position !== 16777216) {
+        return false;
+      }
 
-  console.log(partitions);
+    }
+    return true;
 
-  return { result: true, memory: partitions };
+  });
+  
+  console.log(partitionsC);
+
+  return { result: true, memory: partitionsC };
 
 }

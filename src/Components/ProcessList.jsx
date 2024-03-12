@@ -85,6 +85,8 @@ function ProcessList() {
     }
 
     if (fitAlgorithm == "dinamic") {
+      let llega = partitionsArray
+      console.log("boton  ", llega)
       const { result, memory } = DinamicFit(
         { PID: PID, size: size },
         partitionsArray
