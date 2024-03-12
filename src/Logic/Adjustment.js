@@ -74,7 +74,18 @@ export function DinamicFit(program, partitions) {
   let positionI = position;
   let positionF = 0;
 
-  var objPartitions = [];
+  if (partitions.length > 2) {
+    let dinamicPartition = partitions.pop();
+    let { result, memory } = BestFit(program, partitions)
+    console.log("result:  ", result)
+    if (result) {
+      memory.push(dinamicPartition)
+      return { result: result, memory: memory };
+    }else{
+      memory.push(dinamicPartition)
+    }
+  }
+  let objPartitions = [];
   positionF = positionI + tamPartition;
   objPartitions = {
     name: "",
@@ -86,7 +97,7 @@ export function DinamicFit(program, partitions) {
   };
   positionI = positionF + 1;
   console.log("tam  " + tamPartition)
-  
+
   //memory dinamic
   var indMD = partitions.length - 1;
   partitions[indMD].initial_position = positionF + 1;
@@ -98,18 +109,18 @@ export function DinamicFit(program, partitions) {
   console.log("A");
 
   return { result: true, memory: partitions };
-
 }
 
-export function DinamicCompaction(partitions) {
-  let numberPartitionsT = partitions.length;
 
-  for(let i =0; i < numberPartitionsT; i++){
-    if (partitions[i].lo == false && ! partitions[i].final_position == 16777216) {
-      console.log("A");
-      partitions.splice([i], 1);
-    }
-  }
+export function DinamicCompaction(partitions) {
+  // let numberPartitionsT = partitions.length;
+
+  // for(let i =0; i < numberPartitionsT; i++){
+  //   if (partitions[i].lo == false && ! partitions[i].final_position == 16777216) {
+  //     console.log("A");
+  //     partitions.splice([i], 1);
+  //   }
+  // }
 
   console.log(partitions);
 
