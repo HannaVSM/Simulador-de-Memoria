@@ -70,7 +70,7 @@ export function DinamicFit(program, partitions) {
 
   let tamPartition = program.size;
 
-  let position = 1048577;
+  let position = partitions[partitions.length - 1].initial_position;
   let positionI = position;
   let positionF = 0;
 
