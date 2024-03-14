@@ -45,7 +45,6 @@ export function MemoryFixed(tamPartitionsKib) {
   });
 
   memory.partitions = arrayDeJson;
-  // console.log(memory);
 
   return memory;
 }
@@ -113,7 +112,6 @@ export function MemoryVariable(partitionsRows) {
     memory.partitions.unshift(objSO);
   }
 
-  console.log(memory);
   return memory;
 }
 
@@ -145,6 +143,5 @@ export function MemoryDinamic() {
   });
 
   memory.partitions = arrayDeJson;
-  console.log(memory);
   return memory;
 }

@@ -87,7 +87,6 @@ export const GlobalProvider = ({ children }) => {
     if (memType === "Dinamic") {
       setMemMapBuild("Dinamic");
       setFitAlgorithm("dinamic");
-      console.log("a");
     }
     if (memType === "Default") {
       setMemMapBuild("Default");

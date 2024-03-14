@@ -346,7 +346,7 @@ function PartitionConfig({ memType }) {
                 type="button"
                 value="Compact"
                 onClick={() => {
-                  DinamicCompaction(partitionsArray);
+                  setPartitionsArray(DinamicCompaction(partitionsArray).memory);
                 }}
                 className="max-w-22 w-24 border-2 border-white p-2 rounded-md hover:bg-teal-600 hover:scale-105"
               />

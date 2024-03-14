@@ -52,18 +52,23 @@ function MemMap() {
           className="mt-4 w-full max-w-[90%] h-[40rem] max-h-[40rem] max-h- flex flex-col items-center justify-center outline outline-white py-4 overflow-auto"
         >
           {partitionsTable}
-          {totalMemMapSize != 16777216 && totalMemMapSize != 0 && (
-            <div
-              className={`max-h-8 flex flex-row w-full w-max-full h-full justify-center items-center text-white`}
-            >
-              <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
-                <div className="text-xs pr-1 ">16777216</div>
+          {totalMemMapSize != 16777216 &&
+            totalMemMapSize != 0 &&
+            memMapBuild != "Dinamic" && (
+              <div
+                className={`max-h-8 flex flex-row w-full w-max-full h-full justify-center items-center text-white`}
+              >
+                <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
+                  <div className="text-xs pr-1 ">16384 KiB</div>
+                </div>
+                <div className="w-full max-w-[10%] h-full flex flex-col justify-end items-end text-center">
+                  <div className="text-xs pr-1 ">16777216 B</div>
+                </div>
+                <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center bg-teal-600">
+                  None
+                </div>
               </div>
-              <div className="w-full max-w-[50%] h-full border border-white flex flex-row justify-center items-center text-center bg-teal-600">
-                None
-              </div>
-            </div>
-          )}
+            )}
         </div>
         <div
           id="MemoryState"
